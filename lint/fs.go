@@ -7,5 +7,12 @@ type File struct {
 	IsDir bool
 }
 
-type Walker struct {
+func (file File) lint(config Config, loadedRules []Rule, errorsc <-chan error) []Issue {
+	foundIssues := []Issue{}
+
+	for _, currentRule := range loadedRules {
+		foundIssues = append(foundIssues, currentRule.Apply(file)...)
+	}
+
+	return foundIssues
 }

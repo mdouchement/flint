@@ -3,3 +3,11 @@ format = "default"
 severity = "warning"
 error_code = 1
 warning_code = 0
+
+[rules]
+  [rules.no_dangling_underscores]
+  [rules.no_dir_dot]
+  [rules.no_empty_name]
+  [rules.no_multiple_extensions]
+  [rules.no_whitespaces]
+  [rules.snake_case]

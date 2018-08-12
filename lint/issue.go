@@ -13,18 +13,21 @@ const (
 	SeverityError = "error"
 )
 
+type IssuePosition struct {
+	Start uint64
+	End   uint64
+}
+
 // Severity is the type for the failure types.
 type Severity string
 
 // Issue defines a struct for a linting issue.
 type Issue struct {
-	// the path to the file or directory
-	Path            string
-	ViolatedStyle   string
-	ViolatedPattern string
-	Severity        Severity
-	// the rule's number
-	Rule uint64
+	//Severity Severity
+	File         File
+	RuleName     string
+	Explaination string
+	Position     IssuePosition
 }
 
 // ValidateSeverity check if the given severity is valdi
