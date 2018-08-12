@@ -1,0 +1,5 @@
+description = "This is a configuration file for flint, the filesystem linter. More information at https://github.com/z0mbie42/flint"
+format = "default"
+severity = "warning"
+error_code = 1
+warning_code = 0
