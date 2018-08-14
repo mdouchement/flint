@@ -125,15 +125,22 @@ func Get() (lint.Config, error) {
 
 func Default() lint.Config {
 	config := lint.Config{Rules: map[string]lint.RuleConfig{}}
+
 	config.Comment = "This is a configuration file for flint, the filesystem linter. More " +
 		"information here: https://github.com/z0mbie42/flint"
 	config.Format = "default"
 	config.Severity = "warning"
 	config.WarningCode = 0
 	config.ErrorCode = 1
+	//config.Directories = []string{"**"}
+	//config.Files = []string{"**"}
+	config.IgnoreFiles = []string{"**/.*", "**/.*/**/.*", "**/.*/**/*"}
+	config.IgnoreDirectories = []string{"**/.*", ".**/*"}
+
 	for _, rule := range DefaultRules {
 		config.Rules[rule.Name()] = lint.RuleConfig{}
 	}
+
 	return config
 }
 

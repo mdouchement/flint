@@ -22,18 +22,23 @@ type DefinedRule struct {
 // DefinedRules defines the config for all the user defined rules
 type DefinedRules = map[string]DefinedRule
 
+type BaseConfig struct {
+}
+
 // Config defines the config of the linter.
 type Config struct {
 	// the directory of the config file, relative to the execution of flint
 	// Extends []strings // extend a set of rules
 	// for json which does not have comments
-	Comment     string      `toml:"comment" json:"comment"`
-	Format      string      `toml:"format" json:"format"` // output format
-	Severity    Severity    `toml:"severity" json:"severity"`
-	Rules       RulesConfig `toml:"rules" json:"rules"`
-	ErrorCode   int         `toml:"error_code" json:"error_code"`
-	WarningCode int         `toml:"warning_code" json:"warning_code"`
-	//IgnoredFiles       []string     `toml:"ignored_files"`
-	//IgnoredDirectories []string     `toml:"ignored_directories"`
-	//DefinedRules DefinedRules `toml:"defined_rules"`
+	Format      string   `toml:"format" json:"format"`     // default output format
+	Severity    Severity `toml:"severity" json:"severity"` // default severity
+	ErrorCode   int      `toml:"error_code" json:"error_code"`
+	WarningCode int      `toml:"warning_code" json:"warning_code"`
+
+	Comment string `toml:"comment" json:"comment"`
+	//Files             []string    `toml:"files" json:"files"`
+	//Directories       []string    `toml:"directories" json:"directories"`
+	Rules             RulesConfig `toml:"rules" json:"rules"`
+	IgnoreFiles       []string    `toml:"ignore_files" json:"ignore_files"`
+	IgnoreDirectories []string    `toml:"ignore_directories" json:"ignore_directories"`
 }

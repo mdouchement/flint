@@ -5,6 +5,8 @@ import (
 	"path/filepath"
 	"sync"
 	"sync/atomic"
+
+	"github.com/bmatcuk/doublestar"
 )
 
 type Linter struct {
@@ -30,6 +32,32 @@ func (linter *Linter) Lint(config Config, loadedRules []Rule) (<-chan Issue, <-c
 				Name:  name,
 				Ext:   filepath.Ext(name),
 				IsDir: info.IsDir(),
+			}
+
+			if file.IsDir {
+				// check if is an ignored directory
+				for _, pattern := range config.IgnoreDirectories {
+					matched, err := doublestar.PathMatch(pattern, path)
+					if err != nil {
+						errorsc <- err
+						return nil
+					}
+					if matched {
+						return nil
+					}
+				}
+			} else {
+				// check if is an ignored file
+				for _, pattern := range config.IgnoreFiles {
+					matched, err := doublestar.PathMatch(pattern, path)
+					if err != nil {
+						errorsc <- err
+						return nil
+					}
+					if matched {
+						return nil
+					}
+				}
 			}
 
 			// start a new goroutine for each file
