@@ -22,14 +22,12 @@ type DefinedRule struct {
 // DefinedRules defines the config for all the user defined rules
 type DefinedRules = map[string]DefinedRule
 
-type BaseConfig struct {
-}
-
 // Config defines the config of the linter.
 type Config struct {
 	// the directory of the config file, relative to the execution of flint
 	// Extends []strings // extend a set of rules
 	// for json which does not have comments
+	BasePath    string   `toml:"-" json:"-"`
 	Format      string   `toml:"format" json:"format"`     // default output format
 	Severity    Severity `toml:"severity" json:"severity"` // default severity
 	ErrorCode   int      `toml:"error_code" json:"error_code"`

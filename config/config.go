@@ -98,6 +98,12 @@ func parseConfig(configFilePath string) (lint.Config, error) {
 }
 
 func normalizeConfig(config *lint.Config) error {
+	if config.IgnoreFiles == nil {
+		config.IgnoreFiles = []string{}
+	}
+	if config.IgnoreDirectories == nil {
+		config.IgnoreDirectories = []string{}
+	}
 	return nil
 }
 
@@ -119,6 +125,8 @@ func Get() (lint.Config, error) {
 	if err = normalizeConfig(&config); err != nil {
 		return config, err
 	}
+
+	config.BasePath = filepath.Dir(configFilePath)
 
 	return config, nil
 }

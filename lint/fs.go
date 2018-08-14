@@ -1,10 +1,11 @@
 package lint
 
 type File struct {
-	Name  string
-	Path  string
-	Ext   string
-	IsDir bool
+	Name         string
+	Path         string
+	RelativePath string
+	Ext          string
+	IsDir        bool
 }
 
 func (file File) lint(config Config, loadedRules []Rule, errorsc <-chan error) []Issue {

@@ -18,6 +18,11 @@ func (linter *Linter) Lint(config Config, loadedRules []Rule) (<-chan Issue, <-c
 	errorsc := make(chan error)
 	var wg sync.WaitGroup
 
+	wd, err := os.Getwd()
+	if err != nil {
+		return issuesc, errorsc
+	}
+
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
@@ -26,18 +31,30 @@ func (linter *Linter) Lint(config Config, loadedRules []Rule) (<-chan Issue, <-c
 				errorsc <- err
 				return nil
 			}
+
+			if path == "." || path == ".." {
+				return nil
+			}
+
+			relativePath, err := filepath.Rel(config.BasePath, filepath.Join(wd, path))
+			if err != nil {
+				errorsc <- err
+				return nil
+			}
+
 			name := info.Name()
 			file := File{
-				Path:  path,
-				Name:  name,
-				Ext:   filepath.Ext(name),
-				IsDir: info.IsDir(),
+				Path:         path,
+				Name:         name,
+				Ext:          filepath.Ext(name),
+				IsDir:        info.IsDir(),
+				RelativePath: relativePath,
 			}
 
 			if file.IsDir {
 				// check if is an ignored directory
 				for _, pattern := range config.IgnoreDirectories {
-					matched, err := doublestar.PathMatch(pattern, path)
+					matched, err := doublestar.PathMatch(pattern, relativePath)
 					if err != nil {
 						errorsc <- err
 						return nil
@@ -49,7 +66,7 @@ func (linter *Linter) Lint(config Config, loadedRules []Rule) (<-chan Issue, <-c
 			} else {
 				// check if is an ignored file
 				for _, pattern := range config.IgnoreFiles {
-					matched, err := doublestar.PathMatch(pattern, path)
+					matched, err := doublestar.PathMatch(pattern, relativePath)
 					if err != nil {
 						errorsc <- err
 						return nil
