@@ -155,8 +155,8 @@ func Default() lint.ConfigFile {
 	config.Severity = "warning"
 	config.WarningCode = 0
 	config.ErrorCode = 1
-	config.IgnoreFiles = []string{"(^|/)\\..*"}
-	config.IgnoreDirectories = []string{"(^|/)\\..*"}
+	config.IgnoreFiles = []string{".*"}
+	config.IgnoreDirectories = []string{".*"}
 
 	for _, rule := range DefaultRules {
 		config.Rules[rule.Name()] = lint.RuleConfig{}

@@ -30,9 +30,9 @@ severity = "warning" # valid values are [off, warning, error]
 error_code = 1
 warning_code = 0
 
-# you can ignore files and directories using golang regexp patterns
-ignore_files = ["(^|/)\\..*", "^Gopkg\\.(toml|lock)$", "^(LICENSE|README\\.md)$", "vendor/.*"]
-ignore_directories = ["(^|/)\\..*", "vendor/.*"]
+# you can ignore files and directories using glob syntax with negation similar to .gitignore
+ignore_files = [".*", "vendor", "Gopkg.toml", "Gopkg.lock", "README.md", "LICENSE"]
+ignore_directories = [".*", "vendor"]
 
 
 # defin used rules
