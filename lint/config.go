@@ -1,9 +1,5 @@
 package lint
 
-import (
-	"regexp"
-)
-
 // Arguments is type used for the arguments of a rule.
 type Arguments = []interface{}
 
@@ -40,10 +36,12 @@ type Config struct {
 
 	//Files             []string    `toml:"files" json:"files"`
 	//Directories       []string    `toml:"directories" json:"directories"`
-	Rules             Rules
-	RulesConfig       RulesConfig
-	IgnoreFiles       []*regexp.Regexp
-	IgnoreDirectories []*regexp.Regexp
+	Rules       Rules
+	RulesConfig RulesConfig
+	//IgnoreFiles       []*regexp.Regexp
+	//IgnoreDirectories []*regexp.Regexp
+	IgnoreFiles       []string
+	IgnoreDirectories []string
 }
 
 func (config Config) ToFile() ConfigFile {
@@ -59,15 +57,18 @@ func (config Config) ToFile() ConfigFile {
 		ret.Rules[name] = config
 	}
 
-	ret.IgnoreFiles = []string{}
-	for _, regex := range config.IgnoreFiles {
-		ret.IgnoreFiles = append(ret.IgnoreFiles, regex.String())
-	}
+	ret.IgnoreFiles = config.IgnoreFiles
+	/*
+		for _, regex := range config.IgnoreFiles {
+			ret.IgnoreFiles = append(ret.IgnoreFiles, regex.String())
+		}*/
 
-	ret.IgnoreDirectories = []string{}
-	for _, regex := range config.IgnoreDirectories {
-		ret.IgnoreDirectories = append(ret.IgnoreDirectories, regex.String())
-	}
+	ret.IgnoreDirectories = config.IgnoreDirectories
+	/*
+		for _, regex := range config.IgnoreDirectories {
+			ret.IgnoreDirectories = append(ret.IgnoreDirectories, regex.String())
+		}
+	*/
 
 	return ret
 }

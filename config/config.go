@@ -8,7 +8,6 @@ import (
 	"os"
 	"path"
 	"path/filepath"
-	"regexp"
 
 	"github.com/BurntSushi/toml"
 	"github.com/z0mbie42/flint/lint"
@@ -78,14 +77,15 @@ func FindConfigFile() string {
 	return ""
 }
 
-func parseConfig(configFilePath string) (lint.ConfigFile, error) {
+func parseConfig(configFilePath string) (lint.Config, error) {
 	config := lint.ConfigFile{}
+	var ret lint.Config
 	ext := filepath.Ext(configFilePath)
 	var err error
 
 	file, err := ioutil.ReadFile(configFilePath)
 	if err != nil {
-		return config, err
+		return ret, err
 	}
 
 	switch ext {
@@ -97,25 +97,29 @@ func parseConfig(configFilePath string) (lint.ConfigFile, error) {
 		err = errors.New(ext + " is not a configuration file extension")
 	}
 	if err != nil {
-		return config, err
+		return ret, err
 	}
 
-	return config, nil
+	ret, err = ConfigFileToConfig(config)
+	if err != nil {
+		return ret, err
+	}
+
+	return ret, nil
 }
 
 func normalizeConfig(config *lint.Config) error {
 	if config.IgnoreFiles == nil {
-		config.IgnoreFiles = []*regexp.Regexp{}
+		config.IgnoreFiles = []string{}
 	}
 	if config.IgnoreDirectories == nil {
-		config.IgnoreDirectories = []*regexp.Regexp{}
+		config.IgnoreDirectories = []string{}
 	}
 	return nil
 }
 
 func Get() (lint.Config, error) {
 	var err error
-	configFile := lint.ConfigFile{Rules: lint.RulesConfig{}}
 	var config lint.Config
 
 	configFilePath := FindConfigFile()
@@ -124,12 +128,7 @@ func Get() (lint.Config, error) {
 		return config, errors.New(".flint(.toml|json) configuraiton file not found. Please run \"flint init\"")
 	}
 
-	configFile, err = parseConfig(configFilePath)
-	if err != nil {
-		return config, err
-	}
-
-	config, err = ConfigFileToConfig(configFile)
+	config, err = parseConfig(configFilePath)
 	if err != nil {
 		return config, err
 	}
@@ -194,7 +193,9 @@ func ConfigFileToConfig(configFile lint.ConfigFile) (lint.Config, error) {
 
 	ret.RulesConfig = configFile.Rules
 
-	ret.IgnoreFiles = []*regexp.Regexp{}
+	ret.IgnoreFiles = configFile.IgnoreFiles
+
+	/*[]*regexp.Regexp{}
 	for _, regex := range configFile.IgnoreFiles {
 		reg, err := regexp.Compile(regex)
 		if err != nil {
@@ -202,15 +203,19 @@ func ConfigFileToConfig(configFile lint.ConfigFile) (lint.Config, error) {
 		}
 		ret.IgnoreFiles = append(ret.IgnoreFiles, reg)
 	}
+	*/
 
-	ret.IgnoreDirectories = []*regexp.Regexp{}
-	for _, regex := range configFile.IgnoreDirectories {
-		reg, err := regexp.Compile(regex)
-		if err != nil {
-			return ret, fmt.Errorf("invalid regexp pattern: %s: %s", regex, err.Error())
+	ret.IgnoreDirectories = configFile.IgnoreDirectories
+	/*
+		ret.IgnoreDirectories = []*regexp.Regexp{}
+		for _, regex := range configFile.IgnoreDirectories {
+			reg, err := regexp.Compile(regex)
+			if err != nil {
+				return ret, fmt.Errorf("invalid regexp pattern: %s: %s", regex, err.Error())
+			}
+			ret.IgnoreDirectories = append(ret.IgnoreDirectories, reg)
 		}
-		ret.IgnoreDirectories = append(ret.IgnoreDirectories, reg)
-	}
+	*/
 
 	return ret, nil
 }

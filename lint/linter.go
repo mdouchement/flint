@@ -5,6 +5,8 @@ import (
 	"path/filepath"
 	"sync"
 	"sync/atomic"
+
+	"github.com/zealic/xignore"
 )
 
 type Linter struct {
@@ -13,20 +15,29 @@ type Linter struct {
 
 func isIgnored(relativePath string, isDir bool, config *Config) bool {
 	if isDir {
-		// check if is an ignored directory
-		for _, regex := range config.IgnoreDirectories {
-			if regex.MatchString(relativePath) {
-				return true
-			}
-		}
+		ret, _ := xignore.IsMatch(relativePath, config.IgnoreDirectories)
+		return ret
 	} else {
-		// check if is an ignored file
-		for _, regex := range config.IgnoreFiles {
-			if regex.MatchString(relativePath) {
-				return true
+		ret, _ := xignore.IsMatch(relativePath, config.IgnoreFiles)
+		return ret
+	}
+	/*
+		if isDir {
+			// check if is an ignored directory
+			for _, regex := range config.IgnoreDirectories {
+				if regex.MatchString(relativePath) {
+					return true
+				}
+			}
+		} else {
+			// check if is an ignored file
+			for _, regex := range config.IgnoreFiles {
+				if regex.MatchString(relativePath) {
+					return true
+				}
 			}
 		}
-	}
+	*/
 
 	return false
 }

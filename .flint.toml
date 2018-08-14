@@ -3,8 +3,8 @@ format = "default"
 severity = "warning"
 error_code = 1
 warning_code = 0
-ignore_files = ["(^|/)\\..*", "^Gopkg\\.(toml|lock)$", "^(LICENSE|README\\.md)$", "vendor/.*"]
-ignore_directories = ["(^|/)\\..*", "vendor/.*"]
+ignore_files = [".*", "vendor", "Gopkg.toml", "Gopkg.lock", "README.md", "LICENSE"]
+ignore_directories = [".*", "vendor"]
 
 [rules]
   [rules."dir/no_dot"]

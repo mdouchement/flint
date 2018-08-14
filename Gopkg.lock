@@ -25,9 +25,15 @@
   revision = "9a97c102cda95a86cec2345a6f09f55a939babf5"
   version = "v1.0.2"
 
+[[projects]]
+  name = "github.com/zealic/xignore"
+  packages = ["."]
+  revision = "299cc3d7c39d4d7c66b52c1a5d024cfe360192dd"
+  version = "v0.1.0"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "795b161fbff943f2220d3af0a459f732ff77baa4cee32bba5b6e7610e6106f98"
+  inputs-digest = "abe7fa1eb1a911145fcfae0cd42d1642bc6914facc238174ae8af73e315f78a7"
   solver-name = "gps-cdcl"
   solver-version = 1
