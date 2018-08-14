@@ -7,9 +7,9 @@ import (
 	"github.com/z0mbie42/flint/lint"
 )
 
-type LowerCaseExtension struct{}
+type LowerCaseExt struct{}
 
-func (r LowerCaseExtension) Apply(file lint.File) []lint.Issue {
+func (r LowerCaseExt) Apply(file lint.File) []lint.Issue {
 	issues := []lint.Issue{}
 
 	if file.IsDir {
@@ -29,6 +29,6 @@ func (r LowerCaseExtension) Apply(file lint.File) []lint.Issue {
 	return issues
 }
 
-func (_ LowerCaseExtension) Name() string {
-	return "file/lower_case_extension"
+func (_ LowerCaseExt) Name() string {
+	return "file/lower_case_ext"
 }

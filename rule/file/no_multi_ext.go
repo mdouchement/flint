@@ -1,4 +1,4 @@
-package rule
+package file
 
 import (
 	"strings"
@@ -6,11 +6,15 @@ import (
 	"github.com/z0mbie42/flint/lint"
 )
 
-type NoMultiExtensions struct{}
+type NoMultiExt struct{}
 
-func (r NoMultiExtensions) Apply(file lint.File) []lint.Issue {
+func (r NoMultiExt) Apply(file lint.File) []lint.Issue {
 	dotCount := strings.Count(file.Name, ".")
 	issues := []lint.Issue{}
+
+	if file.IsDir {
+		return issues
+	}
 
 	if dotCount > 1 {
 		issue := lint.Issue{
@@ -24,6 +28,6 @@ func (r NoMultiExtensions) Apply(file lint.File) []lint.Issue {
 	return issues
 }
 
-func (_ NoMultiExtensions) Name() string {
-	return "no_multi_extensions"
+func (_ NoMultiExt) Name() string {
+	return "file/no_multi_ext"
 }

@@ -23,10 +23,10 @@ var DefaultRules = lint.Rules{
 	rule.NoLeadingUnderscores{},
 	rule.NoTrailingUnderscores{},
 	rule.NoEmptyName{},
-	rule.NoMultiExtensions{},
 	rule.NoWhitespaces{},
 	rule.SnakeCase{},
-	file.LowerCaseExtension{},
+	file.LowerCaseExt{},
+	file.NoMultiExt{},
 	dir.NoDot{},
 }
 
@@ -34,10 +34,10 @@ var AllRules = lint.Rules{
 	rule.NoLeadingUnderscores{},
 	rule.NoTrailingUnderscores{},
 	rule.NoEmptyName{},
-	rule.NoMultiExtensions{},
 	rule.NoWhitespaces{},
 	rule.SnakeCase{},
-	file.LowerCaseExtension{},
+	file.LowerCaseExt{},
+	file.NoMultiExt{},
 	dir.NoDot{},
 }
 
@@ -156,8 +156,6 @@ func Default() lint.ConfigFile {
 	config.Severity = "warning"
 	config.WarningCode = 0
 	config.ErrorCode = 1
-	//config.Directories = []string{"**"}
-	//config.Files = []string{"**"}
 	config.IgnoreFiles = []string{"(^|/)\\..*"}
 	config.IgnoreDirectories = []string{"(^|/)\\..*"}
 
