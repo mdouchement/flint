@@ -21,14 +21,8 @@ More information here: https://github.com/z0mbie42/flint`,
 			os.Exit(1)
 		}
 
-		loadedRules, err := config.GetLoadedRules(conf)
-		if err != nil {
-			fmt.Fprintln(os.Stderr, err)
-			os.Exit(1)
-		}
-
 		linter := lint.NewLinter()
-		issuesc, _ := linter.Lint(conf, loadedRules)
+		issuesc, _ := linter.Lint(conf)
 		for issue := range issuesc {
 			fmt.Printf("%s: [%s] %s\n", issue.File.Path, issue.RuleName, issue.Explaination)
 		}

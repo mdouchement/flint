@@ -15,3 +15,5 @@ type Rule interface {
 	//Category() string
 	Apply(File) []Issue
 }
+
+type Rules = []Rule

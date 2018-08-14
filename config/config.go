@@ -3,10 +3,12 @@ package config
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"os"
 	"path"
 	"path/filepath"
+	"regexp"
 
 	"github.com/BurntSushi/toml"
 	"github.com/z0mbie42/flint/lint"
@@ -17,7 +19,7 @@ import (
 
 const DefaultConfigurationFileName = ".flint"
 
-var DefaultRules = []lint.Rule{
+var DefaultRules = lint.Rules{
 	rule.NoLeadingUnderscores{},
 	rule.NoTrailingUnderscores{},
 	rule.NoEmptyName{},
@@ -28,7 +30,7 @@ var DefaultRules = []lint.Rule{
 	dir.NoDot{},
 }
 
-var AllRules = []lint.Rule{
+var AllRules = lint.Rules{
 	rule.NoLeadingUnderscores{},
 	rule.NoTrailingUnderscores{},
 	rule.NoEmptyName{},
@@ -76,8 +78,8 @@ func FindConfigFile() string {
 	return ""
 }
 
-func parseConfig(configFilePath string) (lint.Config, error) {
-	config := lint.Config{}
+func parseConfig(configFilePath string) (lint.ConfigFile, error) {
+	config := lint.ConfigFile{}
 	ext := filepath.Ext(configFilePath)
 	var err error
 
@@ -103,17 +105,18 @@ func parseConfig(configFilePath string) (lint.Config, error) {
 
 func normalizeConfig(config *lint.Config) error {
 	if config.IgnoreFiles == nil {
-		config.IgnoreFiles = []string{}
+		config.IgnoreFiles = []*regexp.Regexp{}
 	}
 	if config.IgnoreDirectories == nil {
-		config.IgnoreDirectories = []string{}
+		config.IgnoreDirectories = []*regexp.Regexp{}
 	}
 	return nil
 }
 
 func Get() (lint.Config, error) {
 	var err error
-	config := lint.Config{Rules: map[string]lint.RuleConfig{}}
+	configFile := lint.ConfigFile{Rules: lint.RulesConfig{}}
+	var config lint.Config
 
 	configFilePath := FindConfigFile()
 
@@ -121,7 +124,12 @@ func Get() (lint.Config, error) {
 		return config, errors.New(".flint(.toml|json) configuraiton file not found. Please run \"flint init\"")
 	}
 
-	config, err = parseConfig(configFilePath)
+	configFile, err = parseConfig(configFilePath)
+	if err != nil {
+		return config, err
+	}
+
+	config, err = ConfigFileToConfig(configFile)
 	if err != nil {
 		return config, err
 	}
@@ -130,7 +138,7 @@ func Get() (lint.Config, error) {
 		return config, err
 	}
 
-	config.BasePath = filepath.Dir(configFilePath)
+	config.BaseDir = filepath.Dir(configFilePath)
 	config.WorkingDir, err = os.Getwd()
 	if err != nil {
 		return config, err
@@ -139,8 +147,8 @@ func Get() (lint.Config, error) {
 	return config, nil
 }
 
-func Default() lint.Config {
-	config := lint.Config{Rules: map[string]lint.RuleConfig{}}
+func Default() lint.ConfigFile {
+	config := lint.ConfigFile{Rules: lint.RulesConfig{}}
 
 	config.Comment = "This is a configuration file for flint, the filesystem linter. More " +
 		"information here: https://github.com/z0mbie42/flint"
@@ -150,8 +158,8 @@ func Default() lint.Config {
 	config.ErrorCode = 1
 	//config.Directories = []string{"**"}
 	//config.Files = []string{"**"}
-	config.IgnoreFiles = []string{"**/.*", "**/.*/**/.*", "**/.*/**/*"}
-	config.IgnoreDirectories = []string{"**/.*", ".**/*"}
+	config.IgnoreFiles = []string{"(^|/)\\..*"}
+	config.IgnoreDirectories = []string{"(^|/)\\..*"}
 
 	for _, rule := range DefaultRules {
 		config.Rules[rule.Name()] = lint.RuleConfig{}
@@ -160,20 +168,51 @@ func Default() lint.Config {
 	return config
 }
 
-func GetLoadedRules(config lint.Config) ([]lint.Rule, error) {
-	rulesMap := map[string]lint.Rule{}
-	for _, r := range AllRules {
-		rulesMap[r.Name()] = r
-	}
-
-	lintingRules := []lint.Rule{}
-	for name := range config.Rules {
-		rule, ok := rulesMap[name]
-		if !ok {
-			return nil, errors.New("cannot find rule: " + name)
+func findRule(arr []lint.Rule, name string) (lint.Rule, bool) {
+	for _, rule := range arr {
+		if rule.Name() == name {
+			return rule, true
 		}
-		lintingRules = append(lintingRules, rule)
+	}
+	return nil, false
+}
+
+func ConfigFileToConfig(configFile lint.ConfigFile) (lint.Config, error) {
+	ret := lint.Config{}
+
+	ret.Format = configFile.Format
+	ret.Severity = configFile.Severity
+	ret.ErrorCode = configFile.ErrorCode
+	ret.WarningCode = configFile.WarningCode
+
+	ret.Rules = lint.Rules{}
+	for name := range configFile.Rules {
+		rule, ok := findRule(AllRules, name)
+		if !ok {
+			return ret, fmt.Errorf("cannot find rule: %s", name)
+		}
+		ret.Rules = append(ret.Rules, rule)
 	}
 
-	return lintingRules, nil
+	ret.RulesConfig = configFile.Rules
+
+	ret.IgnoreFiles = []*regexp.Regexp{}
+	for _, regex := range configFile.IgnoreFiles {
+		reg, err := regexp.Compile(regex)
+		if err != nil {
+			return ret, fmt.Errorf("invalid regexp pattern: %s: %s", regex, err.Error())
+		}
+		ret.IgnoreFiles = append(ret.IgnoreFiles, reg)
+	}
+
+	ret.IgnoreDirectories = []*regexp.Regexp{}
+	for _, regex := range configFile.IgnoreDirectories {
+		reg, err := regexp.Compile(regex)
+		if err != nil {
+			return ret, fmt.Errorf("invalid regexp pattern: %s: %s", regex, err.Error())
+		}
+		ret.IgnoreDirectories = append(ret.IgnoreDirectories, reg)
+	}
+
+	return ret, nil
 }

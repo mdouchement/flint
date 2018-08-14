@@ -1,5 +1,9 @@
 package lint
 
+import (
+	"regexp"
+)
+
 // Arguments is type used for the arguments of a rule.
 type Arguments = []interface{}
 
@@ -27,16 +31,54 @@ type Config struct {
 	// the directory of the config file, relative to the execution of flint
 	// Extends []strings // extend a set of rules
 	// for json which does not have comments
-	BasePath    string   `toml:"-" json:"-"`
-	WorkingDir  string   `toml:"-" json:"-"`
+	BaseDir     string
+	WorkingDir  string
+	Format      string
+	Severity    Severity
+	ErrorCode   int
+	WarningCode int
+
+	//Files             []string    `toml:"files" json:"files"`
+	//Directories       []string    `toml:"directories" json:"directories"`
+	Rules             Rules
+	RulesConfig       RulesConfig
+	IgnoreFiles       []*regexp.Regexp
+	IgnoreDirectories []*regexp.Regexp
+}
+
+func (config Config) ToFile() ConfigFile {
+	ret := ConfigFile{}
+
+	ret.Format = config.Format
+	ret.Severity = config.Severity
+	ret.ErrorCode = config.ErrorCode
+	ret.WarningCode = config.WarningCode
+
+	ret.Rules = RulesConfig{}
+	for name, config := range config.RulesConfig {
+		ret.Rules[name] = config
+	}
+
+	ret.IgnoreFiles = []string{}
+	for _, regex := range config.IgnoreFiles {
+		ret.IgnoreFiles = append(ret.IgnoreFiles, regex.String())
+	}
+
+	ret.IgnoreDirectories = []string{}
+	for _, regex := range config.IgnoreDirectories {
+		ret.IgnoreDirectories = append(ret.IgnoreDirectories, regex.String())
+	}
+
+	return ret
+}
+
+type ConfigFile struct {
+	Comment     string   `toml:"comment" json:"comment"`
 	Format      string   `toml:"format" json:"format"`     // default output format
 	Severity    Severity `toml:"severity" json:"severity"` // default severity
 	ErrorCode   int      `toml:"error_code" json:"error_code"`
 	WarningCode int      `toml:"warning_code" json:"warning_code"`
 
-	Comment string `toml:"comment" json:"comment"`
-	//Files             []string    `toml:"files" json:"files"`
-	//Directories       []string    `toml:"directories" json:"directories"`
 	Rules             RulesConfig `toml:"rules" json:"rules"`
 	IgnoreFiles       []string    `toml:"ignore_files" json:"ignore_files"`
 	IgnoreDirectories []string    `toml:"ignore_directories" json:"ignore_directories"`

@@ -5,15 +5,33 @@ import (
 	"path/filepath"
 	"sync"
 	"sync/atomic"
-
-	"github.com/bmatcuk/doublestar"
 )
 
 type Linter struct {
 	ExitCode int32
 }
 
-func (linter *Linter) Lint(config Config, loadedRules []Rule) (<-chan Issue, <-chan error) {
+func isIgnored(relativePath string, isDir bool, config *Config) bool {
+	if isDir {
+		// check if is an ignored directory
+		for _, regex := range config.IgnoreDirectories {
+			if regex.MatchString(relativePath) {
+				return true
+			}
+		}
+	} else {
+		// check if is an ignored file
+		for _, regex := range config.IgnoreFiles {
+			if regex.MatchString(relativePath) {
+				return true
+			}
+		}
+	}
+
+	return false
+}
+
+func (linter *Linter) Lint(config Config) (<-chan Issue, <-chan error) {
 	issuesc := make(chan Issue)
 	errorsc := make(chan error)
 	var wg sync.WaitGroup
@@ -31,7 +49,7 @@ func (linter *Linter) Lint(config Config, loadedRules []Rule) (<-chan Issue, <-c
 				return nil
 			}
 
-			relativePath, err := filepath.Rel(config.BasePath, filepath.Join(config.WorkingDir, path))
+			relativePath, err := filepath.Rel(config.BaseDir, filepath.Join(config.WorkingDir, path))
 			if err != nil {
 				errorsc <- err
 				return nil
@@ -46,43 +64,21 @@ func (linter *Linter) Lint(config Config, loadedRules []Rule) (<-chan Issue, <-c
 				RelativePath: relativePath,
 			}
 
-			if file.IsDir {
-				// check if is an ignored directory
-				for _, pattern := range config.IgnoreDirectories {
-					matched, err := doublestar.PathMatch(pattern, relativePath)
-					if err != nil {
-						errorsc <- err
-						return nil
-					}
-					if matched {
-						return nil
-					}
-				}
-			} else {
-				// check if is an ignored file
-				for _, pattern := range config.IgnoreFiles {
-					matched, err := doublestar.PathMatch(pattern, relativePath)
-					if err != nil {
-						errorsc <- err
-						return nil
-					}
-					if matched {
-						return nil
-					}
-				}
+			if isIgnored(relativePath, file.IsDir, &config) {
+				return nil
 			}
 
 			// start a new goroutine for each file
 			wg.Add(1)
 			go func() {
 				defer wg.Done()
-				issues := file.lint(config, loadedRules, errorsc)
+				issues := lintFile(file, config, errorsc)
 				for _, issue := range issues {
 					if linter.ExitCode == 0 {
 						atomic.StoreInt32(&linter.ExitCode, int32(config.WarningCode))
 					}
 					if int(linter.ExitCode) != config.ErrorCode {
-						if c, ok := config.Rules[issue.RuleName]; ok && c.Severity == SeverityError {
+						if c, ok := config.RulesConfig[issue.RuleName]; ok && c.Severity == SeverityError {
 							atomic.StoreInt32(&linter.ExitCode, int32(config.ErrorCode))
 						}
 					}
@@ -103,6 +99,16 @@ func (linter *Linter) Lint(config Config, loadedRules []Rule) (<-chan Issue, <-c
 	}()
 
 	return issuesc, errorsc
+}
+
+func lintFile(file File, config Config, errorsc <-chan error) []Issue {
+	foundIssues := []Issue{}
+
+	for _, currentRule := range config.Rules {
+		foundIssues = append(foundIssues, currentRule.Apply(file)...)
+	}
+
+	return foundIssues
 }
 
 func NewLinter() *Linter {
