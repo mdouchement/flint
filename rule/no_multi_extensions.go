@@ -6,9 +6,9 @@ import (
 	"github.com/z0mbie42/flint/lint"
 )
 
-type NoMultipleExtensions struct{}
+type NoMultiExtensions struct{}
 
-func (r NoMultipleExtensions) Apply(file lint.File) []lint.Issue {
+func (r NoMultiExtensions) Apply(file lint.File) []lint.Issue {
 	dotCount := strings.Count(file.Name, ".")
 	issues := []lint.Issue{}
 
@@ -24,6 +24,6 @@ func (r NoMultipleExtensions) Apply(file lint.File) []lint.Issue {
 	return issues
 }
 
-func (_ NoMultipleExtensions) Name() string {
-	return "no_multiple_extensions"
+func (_ NoMultiExtensions) Name() string {
+	return "no_multi_extensions"
 }

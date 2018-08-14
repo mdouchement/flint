@@ -27,7 +27,7 @@ type Config struct {
 	// the directory of the config file, relative to the execution of flint
 	// Extends []strings // extend a set of rules
 	// for json which does not have comments
-	Comment     string      `toml:"description" json:"description"`
+	Comment     string      `toml:"comment" json:"comment"`
 	Format      string      `toml:"format" json:"format"` // output format
 	Severity    Severity    `toml:"severity" json:"severity"`
 	Rules       RulesConfig `toml:"rules" json:"rules"`

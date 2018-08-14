@@ -29,7 +29,7 @@ func (r SnakeCase) Apply(file lint.File) []lint.Issue {
 			issue := lint.Issue{
 				File:         file,
 				RuleName:     r.Name(),
-				Explaination: "cannot have consecutive underscores",
+				Explaination: "cannot have multiple consecutive underscores",
 			}
 			issues = append(issues, issue)
 		}

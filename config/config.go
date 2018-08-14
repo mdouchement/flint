@@ -16,19 +16,21 @@ import (
 const DefaultConfigurationFileName = ".flint"
 
 var DefaultRules = []lint.Rule{
-	rule.NoDanglingUnderscores{},
+	rule.NoLeadingUnderscores{},
+	rule.NoTrailingUnderscores{},
 	rule.NoDirDot{},
 	rule.NoEmptyName{},
-	rule.NoMultipleExtensions{},
+	rule.NoMultiExtensions{},
 	rule.NoWhitespaces{},
 	rule.SnakeCase{},
 }
 
 var AllRules = []lint.Rule{
-	rule.NoDanglingUnderscores{},
+	rule.NoLeadingUnderscores{},
+	rule.NoTrailingUnderscores{},
 	rule.NoDirDot{},
 	rule.NoEmptyName{},
-	rule.NoMultipleExtensions{},
+	rule.NoMultiExtensions{},
 	rule.NoWhitespaces{},
 	rule.SnakeCase{},
 }
@@ -123,8 +125,8 @@ func Get() (lint.Config, error) {
 
 func Default() lint.Config {
 	config := lint.Config{Rules: map[string]lint.RuleConfig{}}
-	config.Description = "This is a configuration file for flint, the filesystem linter. More " +
-		"information at https://github.com/z0mbie42/flint"
+	config.Comment = "This is a configuration file for flint, the filesystem linter. More " +
+		"information here: https://github.com/z0mbie42/flint"
 	config.Format = "default"
 	config.Severity = "warning"
 	config.WarningCode = 0

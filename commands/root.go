@@ -30,7 +30,7 @@ More information here: https://github.com/z0mbie42/flint`,
 		linter := lint.NewLinter()
 		issuesc, _ := linter.Lint(conf, loadedRules)
 		for issue := range issuesc {
-			fmt.Println(issue.File.Path + ": " + issue.RuleName + " - " + issue.Explaination)
+			fmt.Printf("%s: [%s] %s\n", issue.File.Path, issue.RuleName, issue.Explaination)
 		}
 
 		os.Exit(int(linter.ExitCode))

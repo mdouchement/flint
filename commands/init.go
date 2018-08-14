@@ -30,7 +30,7 @@ var InitCmd = &cobra.Command{
 		var err error
 
 		if configFile != "" && initForce == false {
-			fmt.Fprintf(os.Stderr, "A configuration file already (%s) exists, use --force to override\n", configFile)
+			fmt.Fprintf(os.Stderr, "A configuration file already exists (%s), use --force to override\n", configFile)
 			os.Exit(1)
 		}
 
