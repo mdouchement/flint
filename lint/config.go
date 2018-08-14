@@ -28,6 +28,7 @@ type Config struct {
 	// Extends []strings // extend a set of rules
 	// for json which does not have comments
 	BasePath    string   `toml:"-" json:"-"`
+	WorkingDir  string   `toml:"-" json:"-"`
 	Format      string   `toml:"format" json:"format"`     // default output format
 	Severity    Severity `toml:"severity" json:"severity"` // default severity
 	ErrorCode   int      `toml:"error_code" json:"error_code"`

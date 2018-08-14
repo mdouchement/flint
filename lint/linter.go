@@ -18,11 +18,6 @@ func (linter *Linter) Lint(config Config, loadedRules []Rule) (<-chan Issue, <-c
 	errorsc := make(chan error)
 	var wg sync.WaitGroup
 
-	wd, err := os.Getwd()
-	if err != nil {
-		return issuesc, errorsc
-	}
-
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
@@ -36,7 +31,7 @@ func (linter *Linter) Lint(config Config, loadedRules []Rule) (<-chan Issue, <-c
 				return nil
 			}
 
-			relativePath, err := filepath.Rel(config.BasePath, filepath.Join(wd, path))
+			relativePath, err := filepath.Rel(config.BasePath, filepath.Join(config.WorkingDir, path))
 			if err != nil {
 				errorsc <- err
 				return nil

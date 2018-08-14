@@ -127,6 +127,10 @@ func Get() (lint.Config, error) {
 	}
 
 	config.BasePath = filepath.Dir(configFilePath)
+	config.WorkingDir, err = os.Getwd()
+	if err != nil {
+		return config, err
+	}
 
 	return config, nil
 }
