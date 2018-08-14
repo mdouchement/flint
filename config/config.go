@@ -11,6 +11,8 @@ import (
 	"github.com/BurntSushi/toml"
 	"github.com/z0mbie42/flint/lint"
 	"github.com/z0mbie42/flint/rule"
+	"github.com/z0mbie42/flint/rule/dir"
+	"github.com/z0mbie42/flint/rule/file"
 )
 
 const DefaultConfigurationFileName = ".flint"
@@ -18,21 +20,23 @@ const DefaultConfigurationFileName = ".flint"
 var DefaultRules = []lint.Rule{
 	rule.NoLeadingUnderscores{},
 	rule.NoTrailingUnderscores{},
-	rule.NoDirDot{},
 	rule.NoEmptyName{},
 	rule.NoMultiExtensions{},
 	rule.NoWhitespaces{},
 	rule.SnakeCase{},
+	file.LowerCaseExtension{},
+	dir.NoDot{},
 }
 
 var AllRules = []lint.Rule{
 	rule.NoLeadingUnderscores{},
 	rule.NoTrailingUnderscores{},
-	rule.NoDirDot{},
 	rule.NoEmptyName{},
 	rule.NoMultiExtensions{},
 	rule.NoWhitespaces{},
 	rule.SnakeCase{},
+	file.LowerCaseExtension{},
+	dir.NoDot{},
 }
 
 var AllFormatters = []lint.Formatter{}

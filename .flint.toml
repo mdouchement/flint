@@ -3,11 +3,12 @@ severity = "warning"
 error_code = 1
 warning_code = 0
 comment = "This is a configuration file for flint, the filesystem linter. More information here: https://github.com/z0mbie42/flint"
-ignore_files = ["**/.*", "**/.*/**/.*", "**/.*/**/*", "README.md", "LICENSE", "Gopkg.{toml,lock}"]
+ignore_files = ["**/.*", "**/.*/**/.*", "**/.*/**/*"]
 ignore_directories = ["**/.*", ".**/*"]
 
 [rules]
-  [rules.no_dir_dot]
+  [rules."dir/no_dot"]
+  [rules."file/lower_case_extension"]
   [rules.no_empty_name]
   [rules.no_leading_underscores]
   [rules.no_multi_extensions]

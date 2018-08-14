@@ -1,4 +1,4 @@
-package rule
+package dir
 
 import (
 	"strings"
@@ -6,9 +6,9 @@ import (
 	"github.com/z0mbie42/flint/lint"
 )
 
-type NoDirDot struct{}
+type NoDot struct{}
 
-func (r NoDirDot) Apply(file lint.File) []lint.Issue {
+func (r NoDot) Apply(file lint.File) []lint.Issue {
 	issues := []lint.Issue{}
 
 	if file.IsDir != true {
@@ -28,6 +28,6 @@ func (r NoDirDot) Apply(file lint.File) []lint.Issue {
 	return issues
 }
 
-func (_ NoDirDot) Name() string {
-	return "no_dir_dot"
+func (_ NoDot) Name() string {
+	return "dir/no_dot"
 }
