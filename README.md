@@ -5,11 +5,20 @@ Fast and configurable filesystem (file and directory names) linter
 [![GoDoc](https://godoc.org/github.com/z0mbie42/flint?status.svg)](https://godoc.org/github.com/z0mbie42/flint)
 [![GitHub release](https://img.shields.io/github/release/z0mbie42/flint.svg)](https://github.com/z0mbie42/flint)
 
-1. [Configuration](#configuration)
+1. [Installation](#installation)
+2. [Configuration](#configuration)
 2. [Usage](#usage)
 3. [Roadmap](#roadmap)
 
 -------------------
+
+## Installation
+
+```bash
+$ go get -u github.com/z0mbie42/flint
+```
+
+
 
 ## Configuration
 
