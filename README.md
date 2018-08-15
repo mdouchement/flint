@@ -72,4 +72,4 @@ ignore_directories = [".*", "vendor"]
 
 ## Roadmap
 
-- [ ] Add the `fix` (with the `--plan` option) command to automagically fix issues.
+- [ ] Add the `fix` command to automagically fix issues (with the `--plan` option).
