@@ -74,3 +74,4 @@ ignore_directories = [".*", "vendor"]
 ## Roadmap
 
 - [ ] Add the `fix` command to automagically fix issues (with the `--plan` option).
+- [ ] Hierarchical configuration (you can have multiple configuration files using your fs tree).
