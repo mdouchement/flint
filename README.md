@@ -38,8 +38,10 @@ format = "default" # valid values are [default]
 severity = "warning" # valid values are [off, warning, error]
 error_code = 1
 warning_code = 0
+match_format = "blob" # match format for ignore_directories and ignore_files, valid valus are [blob, regexp]
 
-# you can ignore files and directories using glob syntax with negation similar to .gitignore
+
+# you can ignore files and directories using glob or regexp syntax according to the configuration above
 ignore_files = [".*", "vendor", "Gopkg.toml", "Gopkg.lock", "README.md", "LICENSE"]
 ignore_directories = [".*", "vendor"]
 
