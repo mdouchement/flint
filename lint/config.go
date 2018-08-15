@@ -33,15 +33,14 @@ type Config struct {
 	Severity    Severity
 	ErrorCode   int
 	WarningCode int
+	MatchFormat string
 
 	//Files             []string    `toml:"files" json:"files"`
 	//Directories       []string    `toml:"directories" json:"directories"`
-	Rules       Rules
-	RulesConfig RulesConfig
-	//IgnoreFiles       []*regexp.Regexp
-	//IgnoreDirectories []*regexp.Regexp
-	IgnoreFiles       []string
-	IgnoreDirectories []string
+	Rules             Rules
+	RulesConfig       RulesConfig
+	IgnoreFiles       Matcher
+	IgnoreDirectories Matcher
 }
 
 func (config Config) ToFile() ConfigFile {
@@ -57,18 +56,8 @@ func (config Config) ToFile() ConfigFile {
 		ret.Rules[name] = config
 	}
 
-	ret.IgnoreFiles = config.IgnoreFiles
-	/*
-		for _, regex := range config.IgnoreFiles {
-			ret.IgnoreFiles = append(ret.IgnoreFiles, regex.String())
-		}*/
-
-	ret.IgnoreDirectories = config.IgnoreDirectories
-	/*
-		for _, regex := range config.IgnoreDirectories {
-			ret.IgnoreDirectories = append(ret.IgnoreDirectories, regex.String())
-		}
-	*/
+	ret.IgnoreFiles = config.IgnoreFiles.ToStringSlice()
+	ret.IgnoreDirectories = config.IgnoreDirectories.ToStringSlice()
 
 	return ret
 }
@@ -79,6 +68,7 @@ type ConfigFile struct {
 	Severity    Severity `toml:"severity" json:"severity"` // default severity
 	ErrorCode   int      `toml:"error_code" json:"error_code"`
 	WarningCode int      `toml:"warning_code" json:"warning_code"`
+	MatchFormat string   `toml:"match_format" json:"match_format"`
 
 	Rules             RulesConfig `toml:"rules" json:"rules"`
 	IgnoreFiles       []string    `toml:"ignore_files" json:"ignore_files"`

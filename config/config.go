@@ -11,6 +11,7 @@ import (
 
 	"github.com/BurntSushi/toml"
 	"github.com/z0mbie42/flint/lint"
+	"github.com/z0mbie42/flint/match"
 	"github.com/z0mbie42/flint/rule"
 	"github.com/z0mbie42/flint/rule/dir"
 	"github.com/z0mbie42/flint/rule/file"
@@ -108,16 +109,6 @@ func parseConfig(configFilePath string) (lint.Config, error) {
 	return ret, nil
 }
 
-func normalizeConfig(config *lint.Config) error {
-	if config.IgnoreFiles == nil {
-		config.IgnoreFiles = []string{}
-	}
-	if config.IgnoreDirectories == nil {
-		config.IgnoreDirectories = []string{}
-	}
-	return nil
-}
-
 func Get() (lint.Config, error) {
 	var err error
 	var config lint.Config
@@ -130,10 +121,6 @@ func Get() (lint.Config, error) {
 
 	config, err = parseConfig(configFilePath)
 	if err != nil {
-		return config, err
-	}
-
-	if err = normalizeConfig(&config); err != nil {
 		return config, err
 	}
 
@@ -155,6 +142,7 @@ func Default() lint.ConfigFile {
 	config.Severity = "warning"
 	config.WarningCode = 0
 	config.ErrorCode = 1
+	config.MatchFormat = "blob"
 	config.IgnoreFiles = []string{".*"}
 	config.IgnoreDirectories = []string{".*"}
 
@@ -176,46 +164,48 @@ func findRule(arr []lint.Rule, name string) (lint.Rule, bool) {
 
 func ConfigFileToConfig(configFile lint.ConfigFile) (lint.Config, error) {
 	ret := lint.Config{}
+	var err error
 
 	ret.Format = configFile.Format
 	ret.Severity = configFile.Severity
 	ret.ErrorCode = configFile.ErrorCode
 	ret.WarningCode = configFile.WarningCode
 
-	ret.Rules = lint.Rules{}
+	if configFile.MatchFormat == "" {
+		ret.MatchFormat = "blob"
+	} else {
+		ret.MatchFormat = configFile.MatchFormat
+	}
+
+	ret.Rules = make(lint.Rules, len(configFile.Rules))
+	i := 0
 	for name := range configFile.Rules {
 		rule, ok := findRule(AllRules, name)
 		if !ok {
 			return ret, fmt.Errorf("cannot find rule: %s", name)
 		}
-		ret.Rules = append(ret.Rules, rule)
+		ret.Rules[i] = rule
+		i += 1
 	}
 
 	ret.RulesConfig = configFile.Rules
 
-	ret.IgnoreFiles = configFile.IgnoreFiles
-
-	/*[]*regexp.Regexp{}
-	for _, regex := range configFile.IgnoreFiles {
-		reg, err := regexp.Compile(regex)
+	switch ret.MatchFormat {
+	case "blob":
+		ret.IgnoreFiles, err = match.NewBlob(configFile.IgnoreFiles)
 		if err != nil {
-			return ret, fmt.Errorf("invalid regexp pattern: %s: %s", regex, err.Error())
+			break
 		}
-		ret.IgnoreFiles = append(ret.IgnoreFiles, reg)
+		ret.IgnoreDirectories, err = match.NewBlob(configFile.IgnoreDirectories)
+	case "regexp":
+		ret.IgnoreFiles, err = match.NewRegexp(configFile.IgnoreFiles)
+		if err != nil {
+			break
+		}
+		ret.IgnoreDirectories, err = match.NewRegexp(configFile.IgnoreDirectories)
+	default:
+		return ret, fmt.Errorf("match_format is not valid: %s, accepted values are [blob, regexp]", ret.MatchFormat)
 	}
-	*/
-
-	ret.IgnoreDirectories = configFile.IgnoreDirectories
-	/*
-		ret.IgnoreDirectories = []*regexp.Regexp{}
-		for _, regex := range configFile.IgnoreDirectories {
-			reg, err := regexp.Compile(regex)
-			if err != nil {
-				return ret, fmt.Errorf("invalid regexp pattern: %s: %s", regex, err.Error())
-			}
-			ret.IgnoreDirectories = append(ret.IgnoreDirectories, reg)
-		}
-	*/
 
 	return ret, nil
 }

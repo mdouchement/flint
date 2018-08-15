@@ -3,7 +3,8 @@ format = "default"
 severity = "warning"
 error_code = 1
 warning_code = 0
-ignore_files = [".*", "vendor", "Gopkg.toml", "Gopkg.lock", "README.md", "LICENSE"]
+match_format = "blob"
+ignore_files = [".*", "vendor", "LICENSE", "README.md", "Gopkg.*"]
 ignore_directories = [".*", "vendor"]
 
 [rules]
