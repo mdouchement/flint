@@ -6,9 +6,9 @@ Fast and configurable filesystem (file and directory names) linter
 [![GitHub release](https://img.shields.io/github/release/z0mbie42/flint.svg)](https://github.com/z0mbie42/flint)
 
 1. [Installation](#installation)
-2. [Configuration](#configuration)
 2. [Usage](#usage)
-3. [Roadmap](#roadmap)
+3. [Configuration](#configuration)
+4. [Roadmap](#roadmap)
 
 -------------------
 
@@ -16,6 +16,16 @@ Fast and configurable filesystem (file and directory names) linter
 
 ```bash
 $ go get -u github.com/z0mbie42/flint
+```
+
+
+
+## Usage
+
+```bash
+$ flint init # create a configuration file with default configuration
+$ flint
+# or cd my_directory && flint to lint only current directory and subfiles
 ```
 
 
@@ -58,15 +68,6 @@ ignore_directories = [".*", "vendor"]
   [rules.snake_case]
 ```
 
-
-
-## Usage
-
-```bash
-$ flint init # create a configuration file with default configuration
-$ flint
-# or cd my_directory && flint to lint only current directory and subfiles
-```
 
 
 ## Roadmap
