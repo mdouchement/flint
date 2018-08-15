@@ -22,6 +22,7 @@ $ go get -u github.com/z0mbie42/flint
 
 ## Usage
 
+Go to your project's root directory then
 ```bash
 $ flint init # create a configuration file with default configuration
 $ flint
