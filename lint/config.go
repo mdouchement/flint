@@ -1,5 +1,9 @@
 package lint
 
+import (
+	"github.com/z0mbie42/flint/match"
+)
+
 // Arguments is type used for the arguments of a rule.
 type Arguments = []interface{}
 
@@ -39,8 +43,8 @@ type Config struct {
 	//Directories       []string    `toml:"directories" json:"directories"`
 	Rules             Rules
 	RulesConfig       RulesConfig
-	IgnoreFiles       Matcher
-	IgnoreDirectories Matcher
+	IgnoreFiles       match.Matcher
+	IgnoreDirectories match.Matcher
 }
 
 func (config Config) ToFile() ConfigFile {

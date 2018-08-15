@@ -56,7 +56,7 @@ ignore_files = [".*", "vendor", "Gopkg.toml", "Gopkg.lock", "README.md", "LICENS
 ignore_directories = [".*", "vendor"]
 
 
-# defin used rules
+# define used rules
 [rules]
   [rules."dir/no_dot"]
   [rules."file/lower_case_ext"]

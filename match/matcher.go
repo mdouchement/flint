@@ -1,4 +1,4 @@
-package lint
+package match
 
 type Matcher interface {
 	MatchString(string) bool
