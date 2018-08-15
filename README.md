@@ -1,9 +1,9 @@
 # Flint
 
-Fast and configurable filesystem (file and directory names) linter
-
 [![GoDoc](https://godoc.org/github.com/z0mbie42/flint?status.svg)](https://godoc.org/github.com/z0mbie42/flint)
 [![GitHub release](https://img.shields.io/github/release/z0mbie42/flint.svg)](https://github.com/z0mbie42/flint)
+
+You think there is no place in code reviews to discuss about files naming conventions ? Impose consistent files and directories naming rules with flint: ther filesystem linter.
 
 1. [Installation](#installation)
 2. [Usage](#usage)
