@@ -101,12 +101,7 @@ func parseConfig(configFilePath string) (lint.Config, error) {
 		return ret, err
 	}
 
-	ret, err = ConfigFileToConfig(config)
-	if err != nil {
-		return ret, err
-	}
-
-	return ret, nil
+	return ConfigFileToConfig(config)
 }
 
 func Get() (lint.Config, error) {
@@ -126,11 +121,7 @@ func Get() (lint.Config, error) {
 
 	config.BaseDir = filepath.Dir(configFilePath)
 	config.WorkingDir, err = os.Getwd()
-	if err != nil {
-		return config, err
-	}
-
-	return config, nil
+	return config, err
 }
 
 func Default() lint.ConfigFile {
