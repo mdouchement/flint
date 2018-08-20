@@ -8,7 +8,7 @@ You think there is no place in code reviews to discuss about files naming conven
 1. [Installation](#installation)
 2. [Usage](#usage)
 3. [Configuration](#configuration)
-4. [Availabale rules](#available-rules)
+4. [Available rules](#available-rules)
 5. [Roadmap](#roadmap)
 
 -------------------
@@ -72,7 +72,7 @@ ignore_directories = [".*", "vendor"]
 
 
 
-## Availabale rules
+## Available rules
 
 | Name                  | Description                                                              |
 | --------------------- | :----------------------------------------------------------------------- |
@@ -88,5 +88,4 @@ ignore_directories = [".*", "vendor"]
 
 ## Roadmap
 
-- [ ] Add the `fix` command to automagically fix issues (with the `--plan` option).
-- [ ] Hierarchical configuration (you can have multiple configuration files using your fs tree).
+See [https://github.com/z0mbie42/flint/projects/1](https://github.com/z0mbie42/flint/projects/1)
