@@ -8,7 +8,8 @@ You think there is no place in code reviews to discuss about files naming conven
 1. [Installation](#installation)
 2. [Usage](#usage)
 3. [Configuration](#configuration)
-4. [Roadmap](#roadmap)
+4. [Availabale rules](#available-rules)
+5. [Roadmap](#roadmap)
 
 -------------------
 
@@ -69,6 +70,20 @@ ignore_directories = [".*", "vendor"]
   [rules.snake_case]
 ```
 
+
+
+## Availabale rules
+
+| Name                  | Description                                                              |
+| --------------------- | :----------------------------------------------------------------------- |
+| `dir/no_dot`          | Disallows the usage of `.` in directory names.                           |
+| `file/lower_case_ext` | Files names hould be lower cased.                                        |
+| `file/no_multi_ext`   | Disallows usage of multiple extensions in file names (eg. main.text.js). |
+| `no_empty_name`       | Disallows usage of names which only contains whitespaces.                |
+| `no_leading_underscores` | Disallows usage of leading underscores in names.                      |
+| `no_trailing_underscores` | Disallows usage of trailing underscores in names.                    |
+| `no_whitespaces`      | Disallows usage of whitespaces in names.                                 |
+| `snake_case`          | Force names to respect the `snake case` convention (only lower cased alphanum and underscores). |
 
 
 ## Roadmap
