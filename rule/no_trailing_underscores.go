@@ -16,7 +16,7 @@ func (r NoTrailingUnderscores) Apply(file lint.File) []lint.Issue {
 		if strings.TrimRight(part, "_") != part {
 			issue := lint.Issue{
 				File:     file,
-				RuleName: r.Name(),
+				Rule: r.Name(),
 				Message:  "Unexpected trailing '_'",
 			}
 			issues = append(issues, issue)

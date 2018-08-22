@@ -8,8 +8,8 @@ import (
 	"os"
 
 	"github.com/BurntSushi/toml"
-	"github.com/spf13/cobra"
 	"github.com/astrocorp42/flint/config"
+	"github.com/spf13/cobra"
 )
 
 var initFormat string
@@ -31,12 +31,12 @@ var InitCmd = &cobra.Command{
 
 		if configFile != "" && initForce == false {
 			fmt.Fprintf(os.Stderr, "A configuration file already exists (%s), use --force to override\n", configFile)
-			os.Exit(1)
+			os.Exit(3)
 		}
 
 		if initFormat != "toml" && initFormat != "json" {
 			fmt.Fprintf(os.Stderr, "%s is not a valid configuration file format", initFormat)
-			os.Exit(1)
+			os.Exit(3)
 		}
 
 		conf := config.Default()
@@ -55,13 +55,13 @@ var InitCmd = &cobra.Command{
 		}
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
-			os.Exit(1)
+			os.Exit(3)
 		}
 
 		err = ioutil.WriteFile(filePath, buf.Bytes(), 0644)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
-			os.Exit(1)
+			os.Exit(3)
 		}
 	},
 }

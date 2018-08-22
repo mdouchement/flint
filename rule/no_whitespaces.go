@@ -15,7 +15,7 @@ func (r NoWhitespaces) Apply(file lint.File) []lint.Issue {
 	if strings.IndexFunc(file.Name, unicode.IsSpace) != -1 {
 		issue := lint.Issue{
 			File:     file,
-			RuleName: r.Name(),
+			Rule: r.Name(),
 			Message:  "Unexpected whitespace in name",
 		}
 		issues = append(issues, issue)

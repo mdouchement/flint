@@ -14,7 +14,7 @@ func (r NoEmptyName) Apply(file lint.File) []lint.Issue {
 	if strings.TrimSpace(file.Name) == "" {
 		issue := lint.Issue{
 			File:     file,
-			RuleName: r.Name(),
+			Rule: r.Name(),
 			Message:  "Name should not be compsed exclusively of whitespaces",
 		}
 		issues = append(issues, issue)

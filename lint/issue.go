@@ -14,8 +14,8 @@ const (
 )
 
 type IssuePosition struct {
-	Start uint64
-	End   uint64
+	Start uint64 `json:"start"`
+	End   uint64 `json:"end"`
 }
 
 // Severity is the type for the failure types.
@@ -24,10 +24,11 @@ type Severity string
 // Issue defines a struct for a linting issue.
 type Issue struct {
 	//Severity Severity
-	File     File
-	RuleName string
-	Message  string
-	Position IssuePosition
+	File     File          `json:"file"`
+	Rule     string        `json:"rule"`
+	Message  string        `json:"message"`
+	Position IssuePosition `json:"position"`
+	Severity Severity      `json:"severity"`
 }
 
 // ValidateSeverity check if the given severity is valdi

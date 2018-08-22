@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 
 	"github.com/BurntSushi/toml"
+	"github.com/astrocorp42/flint/formatter"
 	"github.com/astrocorp42/flint/lint"
 	"github.com/astrocorp42/flint/match"
 	"github.com/astrocorp42/flint/rule"
@@ -41,7 +42,11 @@ var AllRules = lint.Rules{
 	dir.NoDot{},
 }
 
-var AllFormatters = []lint.Formatter{}
+var AllFormatters = []lint.Formatter{
+	formatter.Basic{},
+	formatter.JSON{},
+	formatter.NDJSON{},
+}
 
 func FileExists(path string) bool {
 	if _, err := os.Stat(path); err == nil {

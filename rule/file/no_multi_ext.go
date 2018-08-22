@@ -19,7 +19,7 @@ func (r NoMultiExt) Apply(file lint.File) []lint.Issue {
 	if dotCount > 1 {
 		issue := lint.Issue{
 			File:     file,
-			RuleName: r.Name(),
+			Rule: r.Name(),
 			Message:  "should not have multiple extensions (multiple . in name)",
 		}
 		issues = append(issues, issue)

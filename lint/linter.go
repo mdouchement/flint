@@ -65,10 +65,13 @@ func (linter *Linter) Lint(config Config) (<-chan Issue, <-chan error) {
 					if linter.ExitCode == 0 {
 						atomic.StoreInt32(&linter.ExitCode, int32(config.WarningCode))
 					}
-					if int(linter.ExitCode) != config.ErrorCode {
-						if c, ok := config.RulesConfig[issue.RuleName]; ok && c.Severity == SeverityError {
+					if c, ok := config.RulesConfig[issue.Rule]; ok && c.Severity == SeverityError {
+						issue.Severity = SeverityError
+						if int(linter.ExitCode) != config.ErrorCode {
 							atomic.StoreInt32(&linter.ExitCode, int32(config.ErrorCode))
 						}
+					} else {
+						issue.Severity = SeverityWarning
 					}
 					issuesc <- issue
 				}
