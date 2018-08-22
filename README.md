@@ -11,6 +11,7 @@ You think there is no place in code reviews to discuss about files naming conven
 4. [Available rules](#available-rules)
 5. [Available formatters](#available-formatters)
 6. [Roadmap](#roadmap)
+7. [Donations](#donations)
 
 -------------------
 
@@ -117,3 +118,24 @@ ignore_directories = [".*", "vendor"]
 ## Roadmap
 
 See [https://github.com/astrocorp42/flint/projects/1](https://github.com/astrocorp42/flint/projects/1)
+
+
+
+
+
+## Donations
+
+BTC
+```
+38QY24nHRkMxUFsEDobwJU2b5QzuSL39Yb
+```
+
+ETC
+```
+0x5121FE2A1014C4d57FCD2E8C4134A179851aFe6F
+```
+
+XMR
+```
+4GdoN7NCTi8a5gZug7PrwZNKjvHFmKeV11L6pNJPgj5QNEHsN6eeX3DaAQFwZ1ufD4LYCZKArktt113W7QjWvQ7CWBYyPq8Yka6KjndZZs
+```
