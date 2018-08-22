@@ -13,7 +13,6 @@ type jsonOutput struct {
 	Summary jsonSummary  `json:"summary"`
 }
 
-// TODO
 type jsonSummary struct {
 	Errors   map[string]uint64 `json:"errors"`
 	Warnings map[string]uint64 `json:"warnings"`
