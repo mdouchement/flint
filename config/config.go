@@ -10,11 +10,11 @@ import (
 	"path/filepath"
 
 	"github.com/BurntSushi/toml"
-	"github.com/z0mbie42/flint/lint"
-	"github.com/z0mbie42/flint/match"
-	"github.com/z0mbie42/flint/rule"
-	"github.com/z0mbie42/flint/rule/dir"
-	"github.com/z0mbie42/flint/rule/file"
+	"github.com/astrocorp42/flint/lint"
+	"github.com/astrocorp42/flint/match"
+	"github.com/astrocorp42/flint/rule"
+	"github.com/astrocorp42/flint/rule/dir"
+	"github.com/astrocorp42/flint/rule/file"
 )
 
 const DefaultConfigurationFileName = ".flint"
@@ -128,7 +128,7 @@ func Default() lint.ConfigFile {
 	config := lint.ConfigFile{Rules: lint.RulesConfig{}}
 
 	config.Comment = "This is a configuration file for flint, the filesystem linter. More " +
-		"information here: https://github.com/z0mbie42/flint"
+		"information here: https://github.com/astrocorp42/flint"
 	config.Format = "default"
 	config.Severity = "warning"
 	config.WarningCode = 0

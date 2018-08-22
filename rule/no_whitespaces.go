@@ -4,7 +4,7 @@ import (
 	"strings"
 	"unicode"
 
-	"github.com/z0mbie42/flint/lint"
+	"github.com/astrocorp42/flint/lint"
 )
 
 type NoWhitespaces struct{}

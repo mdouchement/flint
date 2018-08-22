@@ -1,7 +1,7 @@
 # Flint
 
-[![GoDoc](https://godoc.org/github.com/z0mbie42/flint?status.svg)](https://godoc.org/github.com/z0mbie42/flint)
-[![GitHub release](https://img.shields.io/github/release/z0mbie42/flint.svg)](https://github.com/z0mbie42/flint)
+[![GoDoc](https://godoc.org/github.com/astrocorp42/flint?status.svg)](https://godoc.org/github.com/astrocorp42/flint)
+[![GitHub release](https://img.shields.io/github/release/astrocorp42/flint.svg)](https://github.com/astrocorp42/flint)
 
 You think there is no place in code reviews to discuss about files naming conventions ? Impose consistent files and directories naming rules with flint: the filesystem linter.
 
@@ -16,7 +16,7 @@ You think there is no place in code reviews to discuss about files naming conven
 ## Installation
 
 ```bash
-$ go get -u github.com/z0mbie42/flint
+$ go get -u github.com/astrocorp42/flint
 ```
 
 
@@ -45,7 +45,7 @@ $ cat .flint.toml
 
 ```toml
 # as json does not allow comments, you can use "comment" field everywhere
-comment = "This is a configuration file for flint, the filesystem linter. More information here: https://github.com/z0mbie42/flint"
+comment = "This is a configuration file for flint, the filesystem linter. More information here: https://github.com/astrocorp42/flint"
 format = "default" # valid values are [default]
 severity = "warning" # valid values are [off, warning, error]
 error_code = 1
@@ -88,4 +88,4 @@ ignore_directories = [".*", "vendor"]
 
 ## Roadmap
 
-See [https://github.com/z0mbie42/flint/projects/1](https://github.com/z0mbie42/flint/projects/1)
+See [https://github.com/astrocorp42/flint/projects/1](https://github.com/astrocorp42/flint/projects/1)
