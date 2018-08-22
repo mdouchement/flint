@@ -43,6 +43,7 @@ var AllRules = lint.Rules{
 }
 
 var AllFormatters = []lint.Formatter{
+	formatter.Console{},
 	formatter.Basic{},
 	formatter.JSON{},
 	formatter.NDJSON{},

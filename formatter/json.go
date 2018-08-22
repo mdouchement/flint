@@ -10,12 +10,7 @@ type JSON struct{}
 
 type jsonOutput struct {
 	Issues  []lint.Issue `json:"issues"`
-	Summary jsonSummary  `json:"summary"`
-}
-
-type jsonSummary struct {
-	Errors   map[string]uint64 `json:"errors"`
-	Warnings map[string]uint64 `json:"warnings"`
+	Summary summary      `json:"summary"`
 }
 
 func (JSON) Name() string {
@@ -29,14 +24,16 @@ func (formatter JSON) Format(issuesc <-chan lint.Issue) (<-chan string, <-chan e
 	go func() {
 		output := jsonOutput{
 			Issues:  []lint.Issue{},
-			Summary: jsonSummary{Errors: map[string]uint64{}, Warnings: map[string]uint64{}},
+			Summary: summary{Errors: severitySummary{Rules: map[string]uint64{}}, Warnings: severitySummary{Rules: map[string]uint64{}}},
 		}
 		for issue := range issuesc {
 			output.Issues = append(output.Issues, issue)
 			if issue.Severity == lint.SeverityError {
-				output.Summary.Errors[issue.Rule] += 1
+				output.Summary.Errors.Total += 1
+				output.Summary.Errors.Rules[issue.Rule] += 1
 			} else {
-				output.Summary.Warnings[issue.Rule] += 1
+				output.Summary.Warnings.Total += 1
+				output.Summary.Warnings.Rules[issue.Rule] += 1
 			}
 		}
 		result, err := json.Marshal(output)

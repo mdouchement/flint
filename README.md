@@ -92,6 +92,11 @@ ignore_directories = [".*", "vendor"]
 ## Available formatters
 
 
+### Console
+![Console formatter](_docs/formatter_console.png)
+
+
+
 ### Basic
 ![Basic formatter](_docs/formatter_basic.png)
 
@@ -103,7 +108,7 @@ ignore_directories = [".*", "vendor"]
 
 
 ### Ndjson
-![Json formatter](_docs/formatter_ndjson.png)
+![Ndson formatter](_docs/formatter_ndjson.png)
 
 
 
