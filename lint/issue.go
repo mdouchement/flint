@@ -24,10 +24,10 @@ type Severity string
 // Issue defines a struct for a linting issue.
 type Issue struct {
 	//Severity Severity
-	File         File
-	RuleName     string
-	Explaination string
-	Position     IssuePosition
+	File     File
+	RuleName string
+	Message  string
+	Position IssuePosition
 }
 
 // ValidateSeverity check if the given severity is valdi

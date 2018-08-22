@@ -19,9 +19,9 @@ func (r LowerCaseExt) Apply(file lint.File) []lint.Issue {
 	ext := filepath.Ext(file.Name)
 	if strings.ToLower(ext) != ext {
 		issue := lint.Issue{
-			File:         file,
-			RuleName:     r.Name(),
-			Explaination: "Extension should be lower cased",
+			File:     file,
+			RuleName: r.Name(),
+			Message:  "Extension should be lower cased",
 		}
 		issues = append(issues, issue)
 	}

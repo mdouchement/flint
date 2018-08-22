@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/spf13/cobra"
 	"github.com/astrocorp42/flint/config"
 	"github.com/astrocorp42/flint/lint"
+	"github.com/spf13/cobra"
 )
 
 var RootCmd = &cobra.Command{
@@ -24,7 +24,7 @@ More information here: https://github.com/astrocorp42/flint`,
 		linter := lint.NewLinter()
 		issuesc, _ := linter.Lint(conf)
 		for issue := range issuesc {
-			fmt.Printf("%s: [%s] %s\n", issue.File.Path, issue.RuleName, issue.Explaination)
+			fmt.Printf("%s: [%s] %s\n", issue.File.Path, issue.RuleName, issue.Message)
 		}
 
 		os.Exit(int(linter.ExitCode))
