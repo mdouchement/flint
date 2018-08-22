@@ -9,7 +9,8 @@ You think there is no place in code reviews to discuss about files naming conven
 2. [Usage](#usage)
 3. [Configuration](#configuration)
 4. [Available rules](#available-rules)
-5. [Roadmap](#roadmap)
+5. [Available formatters](#available-formatters)
+6. [Roadmap](#roadmap)
 
 -------------------
 
@@ -84,6 +85,28 @@ ignore_directories = [".*", "vendor"]
 | `no_trailing_underscores` | Disallows usage of trailing underscores in names.                    |
 | `no_whitespaces`      | Disallows usage of whitespaces in names.                                 |
 | `snake_case`          | Force names to respect the `snake case` convention (only lower cased alphanum and underscores). |
+
+
+
+
+## Available formatters
+
+
+### Basic
+![Basic formatter](_docs/formatter_basic.png)
+
+
+
+### Json
+![Json formatter](_docs/formatter_json.png)
+
+
+
+### Ndjson
+![Json formatter](_docs/formatter_ndjson.png)
+
+
+
 
 
 ## Roadmap
