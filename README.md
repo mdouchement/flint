@@ -103,7 +103,7 @@ ignore_directories = [".*", "vendor"]
 
 
 ### Ndjson
-![Json formatter](_docs/formatter_ndjson.svg)
+![Json formatter](_docs/formatter_ndjson.png)
 
 
 
