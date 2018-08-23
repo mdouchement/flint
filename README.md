@@ -18,7 +18,7 @@ You think there is no place in code reviews to discuss about files naming conven
 
 ## Installation
 
-### Using go
+### Using go (nightly)
 ```bash
 $ go get -u github.com/astrocorp42/flint
 ```
