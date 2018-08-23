@@ -10,7 +10,7 @@ VERSION := $(shell cat version/version.go| grep "\sVersion" | cut -d '"' -f2)
 DOCKER_IMAGE = astrocorp/flint_builder
 
 define checksums
-	echo $$(openssl sha512 $(1) | cut -d " " -f2) $$(echo $(1) | cut -d "/" -f2) >> $(2)/sha512sum$(3)
+	echo $$(openssl sha512 $(1) | cut -d " " -f2) $$(echo $(1) | rev | cut -d "/" -f1 | rev) >> $(2)/sha512sum$(3)
 endef
 
 define build_for_os_arch
