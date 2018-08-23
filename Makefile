@@ -15,7 +15,7 @@ endef
 
 define build_for_os_arch
 	mkdir -p $(DIST_DIR)/$(1)-$(2)/$(VERSION)
-	GOOS=$(1) GOARCH=$(2) go build \
+	GOOS=$(1) GOARCH=$(2) CGO_ENABLED=0 go build -a -installsuffix cgo \
 		 -ldflags "-X $(REPO)/version.UTCBuildTime=`TZ=UTC date -u '+%Y-%m-%dT%H:%M:%SZ'` \
 		 -X $(REPO)/version.GitCommit=`git rev-parse HEAD` \
 		 -X $(REPO)/version.GoVersion=`go version | cut -d' ' -f 3 | cut -c3-`" \
@@ -32,8 +32,7 @@ endef
 
 
 $(NAME): dir
-	dep ensure
-	go build \
+	CGO_ENABLED=0 go build -a -installsuffix cgo \
 		 -ldflags "-X $(REPO)/version.UTCBuildTime=`TZ=UTC date -u '+%Y-%m-%dT%H:%M:%SZ'` \
 		 -X $(REPO)/version.GitCommit=`git rev-parse HEAD` \
 		 -X $(REPO)/version.GoVersion=`go version | cut -d' ' -f 3 | cut -c3-`" \
@@ -44,7 +43,7 @@ test:
 	go test -v -race ./...
 
 install:
-	go install \
+	CGO_ENABLED=0 go install -a -installsuffix cgo \
 		 -ldflags "-X $(REPO)/version.UTCBuildTime=`TZ=UTC date -u '+%Y-%m-%dT%H:%M:%SZ'` \
 		 -X $(REPO)/version.GitCommit=`git rev-parse HEAD` \
 		 -X $(REPO)/version.GoVersion=`go version | cut -d' ' -f 3 | cut -c3-`" \
