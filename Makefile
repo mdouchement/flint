@@ -61,9 +61,7 @@ re-all: clean all
 all: $(NAME) darwin-386 darwin-amd64 linux-arm linux-arm64 linux-386 linux-amd64 windows-386 windows-amd64 freebsd-386 freebsd-amd64
 
 release: clean
-	git commit -m "Releasing v$(VERSION)"
-	git push
-	git tag -a v$(VERSION) -m "Release v$(VERSION)"
+	git tag v$(VERSION)
 	git push origin v$(VERSION)
 
 docker_build:
