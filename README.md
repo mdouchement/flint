@@ -17,9 +17,15 @@ You think there is no place in code reviews to discuss about files naming conven
 
 ## Installation
 
+### Using go
 ```bash
 $ go get -u github.com/astrocorp42/flint
 ```
+
+### Binary releases
+[https://github.com/astrocorp42/flint/releases/latest](https://github.com/astrocorp42/flint/releases/latest)
+
+
 
 
 
@@ -31,6 +37,7 @@ $ flint init # create a configuration file with default configuration
 $ flint
 # or cd my_directory && flint to lint only current directory and subfiles
 ```
+
 
 
 
