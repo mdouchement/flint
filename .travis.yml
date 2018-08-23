@@ -25,7 +25,7 @@ before_deploy:
 deploy:
   provider: releases
   skip_cleanup: true # Important, otherwise the build output would be purged.
-  api_key: $GITHUB_FLINT_TOKEN
+  api_key: $GITHUB_TOKEN
   file_glob: true
   file:
     - dist/sha512sums.txt
