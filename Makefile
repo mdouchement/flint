@@ -1,11 +1,13 @@
 .PHONY: flint install clean re dir re-all all test release
 .PHONY: darwin-386 darwin-amd64 linux-arm linux-arm64 linux-386 linux-amd64
 .PHONY: windows-386 windows-amd64 freebsd-386 freebsd-amd64
+.PHONY: docker_build docker_make_all
 
 NAME = flint
 DIST_DIR = dist
 REPO="github.com/astrocorp42/flint"
 VERSION := $(shell cat version/version.go| grep "\sVersion" | cut -d '"' -f2)
+DOCKER_IMAGE = flint_builder
 
 define checksums
 	echo $$(openssl sha512 $(1) | cut -d " " -f2) $$(echo $(1) | cut -d "/" -f2) >> $(2)/sha512sum$(3)
@@ -42,7 +44,10 @@ test:
 	go test -v -race ./...
 
 install:
-	go install
+	go install \
+		 -ldflags "-X $(REPO)/version.UTCBuildTime=`TZ=UTC date -u '+%Y-%m-%dT%H:%M:%SZ'` \
+		 -X $(REPO)/version.GitCommit=`git rev-parse HEAD` \
+		 -X $(REPO)/version.GoVersion=`go version | cut -d' ' -f 3 | cut -c3-`" \
 
 clean:
 	rm -rf $(NAME) $(DIST_DIR)
@@ -61,6 +66,12 @@ release: clean
 	git push
 	git tag -a v$(VERSION) -m "Release v$(VERSION)"
 	git push origin v$(VERSION)
+
+docker_build:
+	docker build -t $(DOCKER_IMAGE) _build
+
+docker_make_all:
+	docker run --rm -it -v $(PWD):/go/src/github.com/astrocorp42/flint $(DOCKER_IMAGE) make all
 
 darwin-386:
 	$(call build_for_os_arch,darwin,386,)
