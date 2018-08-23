@@ -17,11 +17,8 @@ before_script:
 
 script:
   - make test
-  - make
-
-
-before_deploy:
   - make all
+
 deploy:
   provider: releases
   skip_cleanup: true # Important, otherwise the build output would be purged.
