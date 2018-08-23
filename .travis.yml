@@ -17,6 +17,8 @@ before_script:
 
 script:
   - make test
+  - make
+  - ./dist/flint
   - make all
 
 deploy:
