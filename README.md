@@ -1,7 +1,7 @@
 # Flint
 
 [![GoDoc](https://godoc.org/github.com/astrocorp42/flint?status.svg)](https://godoc.org/github.com/astrocorp42/flint)
-[![GitHub release](https://img.shields.io/github/release/astrocorp42/flint.svg)](https://github.com/astrocorp42/flint)
+[![GitHub release](https://img.shields.io/github/release/astrocorp42/flint.svg)](https://github.com/astrocorp42/flint/releases/latest)
 [![Build Status](https://travis-ci.org/astrocorp42/flint.svg?branch=master)](https://travis-ci.org/astrocorp42/flint)
 
 You think there is no place in code reviews to discuss about files naming conventions ? Impose consistent files and directories naming rules with flint: the filesystem linter.
