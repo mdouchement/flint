@@ -14,3 +14,16 @@ before_script:
 script:
   - make test
   - make
+
+deploy:
+  provider: releases
+  skip_cleanup: true # Important, otherwise the build output would be purged.
+  api_key:
+    secure: "GPR+y8jsQwxqVMYRDkyc8Ypc2gjLm0vd7/9ea0mVLKwwlXTiH86ogPB7TTQ3NUEDJKqg9tfRJtu5xQx7xfIN5AnOymSfOliP/J1inzeXiHyjtSDuq3iuLdamXSQbCNI9enxWRgiIetleqk1NEF5s8SHw3z0mwUWjynY8v3IlMO9C1mz6VWV3SgjFmNmcZgfZnMEQp4bhWQJ9iuPT+C7950PCfRyFCvrsDOj5s9NOWj1iF6l1XzfJ1Hc7SygqTOiBIhvp4Cyj6AX+Ua9k5uF0jn5cx/R/gAtPzpF2NL6WPNAf1lcfrYEMwvL1FtVpnYspoX4xFog4cu5yBFfZ5dUWzczo+Ej41WTqDn6gTPA0QYUrCJP92NdVhARKPM42VSYQNvS+OGhRpFYXWTb7GmElz+1hZdVwoMuXLVO2tXAaP7oU83lomta7J0EaAD4MPR/a9l7WV2fZ+Sz7RP38B/XYiNi103UbZDkt+pVz46whOTfUyiCwcOOpV8eeghwt90BsfIYiY8X32M1O78KBsHaixRn2kNO3FJZcdYoHtA2u9L0HsIGFdbHkdCjGCLVWXi86gMcX7kuhTRZWr13ep2NYeLuJ43jx+f02xRrbh5UGXxI1qwPKnv8Xf8cjpAJH6bZHVXJ2JUJ5xMIsB5sGrwqIytW1Ge12xBl6aYCm0+eSmoE="
+  file_glob: true
+  file:
+    - dist/sha512sums.txt
+    - dist/*.zip
+  on:
+    repo: astrocorp42/flint
+    tags: true # The deployment happens only if the commit has a tag
