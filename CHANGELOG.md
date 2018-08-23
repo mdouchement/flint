@@ -1,5 +1,17 @@
 # Changelog
 
+## v1.3.0 (2018-08-23)
+
+### Added
+
+* the `version` command
+
+### Changed
+
+* Default config ignore more manifet files (Dockerfile, Gopkg.toml...)
+
+
+
 ## v1.2.0 (2018-08-23)
 
 ### Added
