@@ -140,7 +140,7 @@ func Default() lint.ConfigFile {
 	config.WarningCode = 0
 	config.ErrorCode = 1
 	config.MatchFormat = "blob"
-	config.IgnoreFiles = []string{".*"}
+	config.IgnoreFiles = []string{".*", "LICENSE*", "README*", "Gopkg.toml", "Gopkg.lock", "package.json", "Dockerfile", "Makefile", "package-lock.json"}
 	config.IgnoreDirectories = []string{".*"}
 
 	for _, rule := range DefaultRules {
