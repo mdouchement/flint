@@ -14,11 +14,11 @@ git:
 before_script:
   - go get -u github.com/golang/dep/cmd/dep
   - dep ensure
-
-script:
   - make test
   - make
   - ./dist/flint
+
+script:
   - make all
 
 deploy:
