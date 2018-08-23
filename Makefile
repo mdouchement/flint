@@ -5,7 +5,7 @@
 NAME = flint
 DIST_DIR = dist
 REPO="github.com/astrocorp42/flint"
-VERSION := $(shell cat version/version.go| grep "Version =" | cut -d '"' -f2)
+VERSION := $(shell cat version/version.go| grep "\sVersion" | cut -d '"' -f2)
 
 define checksums
 	echo $$(openssl sha512 $(1) | cut -d " " -f2) $$(echo $(1) | cut -d "/" -f2) >> $(2)/sha512sum$(3)

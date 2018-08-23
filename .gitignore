@@ -37,3 +37,4 @@ UserInterfaceState.xcuserstate
 
 .env
 vendor/
+dist/
