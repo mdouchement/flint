@@ -21,7 +21,7 @@ before_script:
   - ./dist/flint
 
 script:
-  - all
+  - make all
 
 deploy:
   provider: releases
