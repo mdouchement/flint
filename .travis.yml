@@ -34,3 +34,8 @@ deploy:
   on:
     repo: astrocorp42/flint
     tags: true # The deployment happens only if the commit has a tag
+
+notifications:
+  email:
+    on_success: never # default: change
+    on_failure: always # default: always
