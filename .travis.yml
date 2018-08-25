@@ -12,13 +12,13 @@ git:
   submodules: false
 
 before_script:
-  - go get
-  - make test
-  - make
+  - env GO111MODULE=on go get
+  - env GO111MODULE=on make test
+  - env GO111MODULE=on make
   - ./dist/flint
 
 script:
-  - make all
+  - env GO111MODULE=on make all
 
 deploy:
   provider: releases

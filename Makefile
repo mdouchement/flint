@@ -70,7 +70,7 @@ docker_build:
 	docker build -t $(DOCKER_IMAGE) _build
 
 docker_make_all:
-	docker run --rm -it -v $(PWD):/go/src/github.com/astrocorp42/flint $(DOCKER_IMAGE) make all
+	docker run --rm -it -v $(PWD):/flint $(DOCKER_IMAGE) make all
 
 darwin_386:
 	$(call build_for_os_arch,darwin,386,)
