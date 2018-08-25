@@ -4,7 +4,7 @@ severity = "warning"
 error_code = 1
 warning_code = 0
 match_format = "blob"
-ignore_files = [".*", "vendor", "LICENSE", "README.md", "Gopkg.*", "CHANGELOG.md", "_build/Dockerfile", "Makefile"]
+ignore_files = [".*", "vendor", "LICENSE", "README.md", "CHANGELOG.md", "_build/Dockerfile", "Makefile"]
 ignore_directories = [".*", "vendor", "_build", "_docs"]
 
 [rules]
