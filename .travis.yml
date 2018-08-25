@@ -12,6 +12,7 @@ git:
   submodules: false
 
 before_script:
+  - go get
   - make test
   - make
   - ./dist/flint
