@@ -9,7 +9,14 @@ import (
 type NoMultiExt struct{}
 
 func (r NoMultiExt) Apply(file lint.File) []lint.Issue {
-	dotCount := strings.Count(file.Name, ".")
+	var name string
+
+	if strings.Index(file.Name, ".") == 0 {
+		name = file.Name[1:]
+	} else {
+		name = file.Name
+	}
+	dotCount := strings.Count(name, ".")
 	issues := []lint.Issue{}
 
 	if file.IsDir {
