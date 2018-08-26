@@ -86,7 +86,7 @@ ignore_directories = [".*", "vendor"]
 | Name                  | Description                                                              |
 | --------------------- | :----------------------------------------------------------------------- |
 | `dir/no_dot`          | Disallows the usage of `.` in directory names.                           |
-| `file/lower_case_ext` | Files names hould be lower cased.                                        |
+| `file/lower_case_ext` | Files names should be lower cased.                                       |
 | `file/no_multi_ext`   | Disallows usage of multiple extensions in file names (eg. main.text.js). |
 | `no_empty_name`       | Disallows usage of names which only contains whitespaces.                |
 | `no_leading_underscores` | Disallows usage of leading underscores in names.                      |
