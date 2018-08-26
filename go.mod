@@ -8,6 +8,6 @@ require (
 	github.com/spf13/cobra v0.0.3
 	github.com/spf13/pflag v1.0.2
 	github.com/stretchr/testify v1.2.2 // indirect
-	github.com/z0mbie42/fswalk v0.2.1
+	github.com/z0mbie42/fswalk v0.2.4
 	github.com/zealic/xignore v0.1.0
 )
