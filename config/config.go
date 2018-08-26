@@ -135,7 +135,6 @@ func Default() lint.ConfigFile {
 
 	config.Description = "This is a configuration file for flint, the filesystem linter. More " +
 		"information here: https://github.com/astrocorp42/flint"
-	config.Format = "default"
 	config.DefaultSeverity = "warning"
 	config.WarningExitCode = 0
 	config.ErrorExitCode = 1
@@ -163,7 +162,6 @@ func ConfigFileToConfig(configFile lint.ConfigFile) (lint.Config, error) {
 	ret := lint.Config{}
 	var err error
 
-	ret.Format = configFile.Format
 	ret.DefaultSeverity = configFile.DefaultSeverity
 	ret.ErrorExitCode = configFile.ErrorExitCode
 	ret.WarningExitCode = configFile.WarningExitCode

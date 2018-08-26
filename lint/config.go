@@ -33,7 +33,6 @@ type Config struct {
 	// for json which does not have comments
 	BaseDir         string
 	WorkingDir      string
-	Format          string
 	DefaultSeverity Severity
 	ErrorExitCode   int
 	WarningExitCode int
@@ -50,7 +49,6 @@ type Config struct {
 func (config Config) ToFile() ConfigFile {
 	ret := ConfigFile{}
 
-	ret.Format = config.Format
 	ret.DefaultSeverity = config.DefaultSeverity
 	ret.ErrorExitCode = config.ErrorExitCode
 	ret.WarningExitCode = config.WarningExitCode
@@ -68,7 +66,6 @@ func (config Config) ToFile() ConfigFile {
 
 type ConfigFile struct {
 	Description     string   `toml:"description" json:"description"`
-	Format          string   `toml:"format" json:"format"` // default output format
 	DefaultSeverity Severity `toml:"default_severity" json:"default_severity"`
 	ErrorExitCode   int      `toml:"error_exit_code" json:"error_exit_code"`
 	WarningExitCode int      `toml:"warning_exit_code" json:"warning_exit_code"`
