@@ -1,10 +1,12 @@
 package lint
 
+import (
+	"github.com/z0mbie42/fswalk"
+)
+
 type File struct {
-	Name         string  `json:"name"`
-	Path         string  `json:"path"`
+	fswalk.File
 	RelativePath string  `json:"relative_path"`
 	Ext          string  `json:"ext"`
-	IsDir        bool    `json:"is_dir"`
 	Issues       []Issue `json:"issues"`
 }

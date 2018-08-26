@@ -1,10 +1,11 @@
 package lint
 
 import (
-	"os"
 	"path/filepath"
 	"sync"
 	"sync/atomic"
+
+	"github.com/z0mbie42/fswalk"
 )
 
 type Linter struct {
@@ -20,49 +21,40 @@ func isIgnored(relativePath string, isDir bool, config *Config) bool {
 	return config.IgnoreFiles.MatchString(relativePath)
 }
 
-func (linter *Linter) Lint() (<-chan File, <-chan error) {
-	filec := make(chan File)
+func (linter *Linter) Lint(filesc <-chan fswalk.File) (<-chan File, <-chan error) {
+	outc := make(chan File)
 	errorsc := make(chan error)
-	var wg sync.WaitGroup
 
-	wg.Add(1)
 	go func() {
-		defer wg.Done()
-		err := filepath.Walk(".", func(path string, info os.FileInfo, err error) error {
+		var wg sync.WaitGroup
+
+		for file := range filesc {
+			if file.Path == "." || file.Path == ".." {
+				continue
+			}
+
+			relativePath, err := filepath.Rel(linter.config.BaseDir, filepath.Join(linter.config.WorkingDir, file.Path))
 			if err != nil {
 				errorsc <- err
-				return nil
+				continue
 			}
 
-			if path == "." || path == ".." {
-				return nil
-			}
-
-			relativePath, err := filepath.Rel(linter.config.BaseDir, filepath.Join(linter.config.WorkingDir, path))
-			if err != nil {
-				errorsc <- err
-				return nil
-			}
-
-			name := info.Name()
-			file := File{
-				Path:         path,
-				Name:         name,
-				Ext:          filepath.Ext(name),
-				IsDir:        info.IsDir(),
+			fileToLint := File{
+				File:         file,
 				RelativePath: relativePath,
+				Ext:          filepath.Ext(file.Name),
 				Issues:       []Issue{},
 			}
 
 			if isIgnored(relativePath, file.IsDir, &linter.config) {
-				return nil
+				continue
 			}
 
 			// start a new goroutine for each file
 			wg.Add(1)
 			go func() {
 				defer wg.Done()
-				issues := lintFile(file, linter.config, errorsc)
+				issues := lintFile(fileToLint, linter.config, errorsc)
 				for _, issue := range issues {
 					if linter.ExitCode == 0 {
 						atomic.StoreInt32(&linter.ExitCode, int32(linter.config.WarningExitCode))
@@ -76,23 +68,16 @@ func (linter *Linter) Lint() (<-chan File, <-chan error) {
 						issue.Severity = SeverityWarning
 					}
 				}
-				file.Issues = issues
-				filec <- file
+				fileToLint.Issues = issues
+				outc <- fileToLint
 			}()
-			return nil
-		})
-		if err != nil {
-			errorsc <- err
 		}
-	}()
-
-	go func() {
 		wg.Wait()
-		close(filec)
+		close(outc)
 		close(errorsc)
 	}()
 
-	return filec, errorsc
+	return outc, errorsc
 }
 
 func lintFile(file File, config Config, errorsc <-chan error) []Issue {

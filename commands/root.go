@@ -9,6 +9,7 @@ import (
 	"github.com/astrocorp42/flint/config"
 	"github.com/astrocorp42/flint/lint"
 	"github.com/spf13/cobra"
+	"github.com/z0mbie42/fswalk"
 )
 
 var rootFormat string
@@ -113,9 +114,15 @@ func runPipeline(config lint.Config, formatter lint.Formatter) (int32, error) {
 	var errcList []<-chan error
 
 	// create the pipeline
-	linter := lint.NewLinter(config)
+	walker, err := fswalk.NewWalker()
+	if err != nil {
+		return 3, err
+	}
+	files, errc := walker.Walk(".")
+	errcList = append(errcList, errc)
 
-	filesc, errc := linter.Lint()
+	linter := lint.NewLinter(config)
+	filesc, errc := linter.Lint(files)
 	errcList = append(errcList, errc)
 
 	outputc, errc := formatter.Format(filesc)
@@ -124,7 +131,7 @@ func runPipeline(config lint.Config, formatter lint.Formatter) (int32, error) {
 	errc = write(outputc)
 	errcList = append(errcList, errc)
 
-	err := waitForPipeline(errcList...)
+	err = waitForPipeline(errcList...)
 	if err != nil {
 		return 3, err
 	}
