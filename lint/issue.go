@@ -24,7 +24,6 @@ type Severity string
 // Issue defines a struct for a linting issue.
 type Issue struct {
 	//Severity Severity
-	File     File          `json:"file"`
 	Rule     string        `json:"rule"`
 	Message  string        `json:"message"`
 	Position IssuePosition `json:"position"`

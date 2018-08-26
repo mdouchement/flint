@@ -19,8 +19,8 @@ func isIgnored(relativePath string, isDir bool, config *Config) bool {
 	return config.IgnoreFiles.MatchString(relativePath)
 }
 
-func (linter *Linter) Lint(config Config) (<-chan Issue, <-chan error) {
-	issuesc := make(chan Issue)
+func (linter *Linter) Lint(config Config) (<-chan File, <-chan error) {
+	filec := make(chan File)
 	errorsc := make(chan error)
 	var wg sync.WaitGroup
 
@@ -50,6 +50,7 @@ func (linter *Linter) Lint(config Config) (<-chan Issue, <-chan error) {
 				Ext:          filepath.Ext(name),
 				IsDir:        info.IsDir(),
 				RelativePath: relativePath,
+				Issues:       []Issue{},
 			}
 
 			if isIgnored(relativePath, file.IsDir, &config) {
@@ -73,8 +74,9 @@ func (linter *Linter) Lint(config Config) (<-chan Issue, <-chan error) {
 					} else {
 						issue.Severity = SeverityWarning
 					}
-					issuesc <- issue
 				}
+				file.Issues = issues
+				filec <- file
 			}()
 			return nil
 		})
@@ -85,11 +87,11 @@ func (linter *Linter) Lint(config Config) (<-chan Issue, <-chan error) {
 
 	go func() {
 		wg.Wait()
-		close(issuesc)
+		close(filec)
 		close(errorsc)
 	}()
 
-	return issuesc, errorsc
+	return filec, errorsc
 }
 
 func lintFile(file File, config Config, errorsc <-chan error) []Issue {

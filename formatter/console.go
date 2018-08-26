@@ -41,7 +41,7 @@ func (Console) Name() string {
 	return "console"
 }
 
-func (formatter Console) Format(issuesc <-chan lint.Issue) (<-chan string, <-chan error) {
+func (formatter Console) Format(filec <-chan lint.File) (<-chan string, <-chan error) {
 	errorsc := make(chan error)
 	outputc := make(chan string)
 
@@ -54,21 +54,29 @@ func (formatter Console) Format(issuesc <-chan lint.Issue) (<-chan string, <-cha
 		issuesStr := "issue"
 		finalColor := cGreen
 
-		for issue := range issuesc {
-			totalIssues += 1
-			var icon string
-			color := cYellow
-			if issue.Severity == lint.SeverityError {
-				summary.Errors.Total += 1
-				summary.Errors.Rules[issue.Rule] += 1
-				color = cRed
-				icon = errorIcon
+		for file := range filec {
+			if file.IsDir {
+				summary.TotalDirectories += 1
 			} else {
-				summary.Warnings.Total += 1
-				summary.Warnings.Rules[issue.Rule] += 1
-				icon = warningIcon
+				summary.TotalFiles += 1
 			}
-			outputc <- fmt.Sprintf("%s [%s] %s\n  %s\n", colorize(icon, color), colorize(issue.Rule, cCyan), issue.Message, issue.File.RelativePath)
+
+			for _, issue := range file.Issues {
+				totalIssues += 1
+				var icon string
+				color := cYellow
+				if issue.Severity == lint.SeverityError {
+					summary.Errors.Total += 1
+					summary.Errors.Rules[issue.Rule] += 1
+					color = cRed
+					icon = errorIcon
+				} else {
+					summary.Warnings.Total += 1
+					summary.Warnings.Rules[issue.Rule] += 1
+					icon = warningIcon
+				}
+				outputc <- fmt.Sprintf("%s [%s] %s\n  %s\n", colorize(icon, color), colorize(issue.Rule, cCyan), issue.Message, file.RelativePath)
+			}
 		}
 
 		if summary.Errors.Total != 0 {

@@ -18,27 +18,24 @@ func (r SnakeCase) Apply(file lint.File) []lint.Issue {
 	for _, part := range parts {
 		if part != strings.ToLower(part) {
 			issue := lint.Issue{
-				File:     file,
-				Rule: r.Name(),
-				Message:  "alphanumeric characters should be lower cased",
+				Rule:    r.Name(),
+				Message: "alphanumeric characters should be lower cased",
 			}
 			issues = append(issues, issue)
 		}
 
 		if strings.Index(part, "__") != -1 {
 			issue := lint.Issue{
-				File:     file,
-				Rule: r.Name(),
-				Message:  "cannot have multiple consecutive underscores",
+				Rule:    r.Name(),
+				Message: "cannot have multiple consecutive underscores",
 			}
 			issues = append(issues, issue)
 		}
 
 		if partialSnakeCaseRegex.MatchString(part) != true {
 			issue := lint.Issue{
-				File:     file,
-				Rule: r.Name(),
-				Message:  "snake case should only contains alphanumeric characters and underscores",
+				Rule:    r.Name(),
+				Message: "snake case should only contains alphanumeric characters and underscores",
 			}
 			issues = append(issues, issue)
 		}

@@ -62,6 +62,16 @@ func mergeErrors(cs ...<-chan error) <-chan error {
 	return out
 }
 
+func waitForPipeline(errs ...<-chan error) error {
+	errc := mergeErrors(errs...)
+	for err := range errc {
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 var RootCmd = &cobra.Command{
 	Use:   "flint",
 	Short: "Flint is a fast and configurable filesystem (file and directory names) linter",
@@ -88,27 +98,39 @@ More information here: https://github.com/astrocorp42/flint`,
 			os.Exit(3)
 		}
 
+		var errcList []<-chan error
+
+		// create the pipeline
 		linter := lint.NewLinter()
-		issuesc, _ := linter.Lint(conf)
-		outputc, errc := choosenFormatter.Format(issuesc)
 
-	Loop:
-		for {
-			select {
-			case outputline, isOpen := <-outputc:
-				if isOpen != true {
-					break Loop
-				}
-				fmt.Println(outputline)
-			case err, isOpen := <-errc:
-				if isOpen && err != nil {
-					fmt.Fprintf(os.Stderr, "Error: %s\n", err.Error())
-					os.Exit(3)
-				}
-			}
+		filesc, errc := linter.Lint(conf)
+		errcList = append(errcList, errc)
 
+		outputc, errc := choosenFormatter.Format(filesc)
+		errcList = append(errcList, errc)
+
+		errc = write(outputc)
+		errcList = append(errcList, errc)
+
+		err = waitForPipeline(errcList...)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Error: %s\n", err.Error())
+			os.Exit(3)
 		}
 
 		os.Exit(int(linter.ExitCode))
 	},
+}
+
+func write(lines <-chan string) <-chan error {
+	ret := make(chan error)
+
+	go func() {
+		for outputline := range lines {
+			fmt.Println(outputline)
+		}
+		close(ret)
+	}()
+
+	return ret
 }

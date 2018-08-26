@@ -15,9 +15,8 @@ func (r NoLeadingUnderscores) Apply(file lint.File) []lint.Issue {
 	for _, part := range parts {
 		if strings.TrimLeft(part, "_") != part {
 			issue := lint.Issue{
-				File:     file,
-				Rule: r.Name(),
-				Message:  "Unexpected leading '_'",
+				Rule:    r.Name(),
+				Message: "Unexpected leading '_'",
 			}
 			issues = append(issues, issue)
 		}

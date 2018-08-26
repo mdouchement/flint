@@ -18,9 +18,8 @@ func (r NoDot) Apply(file lint.File) []lint.Issue {
 
 	if dotCount >= 1 {
 		issue := lint.Issue{
-			File:     file,
-			Rule: r.Name(),
-			Message:  "Unexpected '.' in directory name",
+			Rule:    r.Name(),
+			Message: "Unexpected '.' in directory name",
 		}
 		issues = append(issues, issue)
 	}
