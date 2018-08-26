@@ -110,10 +110,10 @@ More information here: https://github.com/astrocorp42/flint`,
 	},
 }
 
+// runPipeline creates and runs the linting pipeline (walker -> linter -> formatter -> writer)
 func runPipeline(config lint.Config, formatter lint.Formatter) (int32, error) {
 	var errcList []<-chan error
 
-	// create the pipeline
 	walker, err := fswalk.NewWalker()
 	if err != nil {
 		return 3, err
