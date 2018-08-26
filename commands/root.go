@@ -98,6 +98,7 @@ More information here: https://github.com/astrocorp42/flint`,
 			os.Exit(3)
 		}
 
+		// run the linter with the given configuration
 		exitCode, err := runPipeline(conf, choosenFormatter)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Error: %s\n", err.Error())
