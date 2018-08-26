@@ -28,7 +28,7 @@ func allRootFormats() []string {
 	return ret
 }
 
-// MergeErrors merges multiple channels of errors.
+// mergeErrors merges multiple channels of errors.
 // Based on https://blog.golang.org/pipelines.
 func mergeErrors(cs ...<-chan error) <-chan error {
 	var wg sync.WaitGroup
