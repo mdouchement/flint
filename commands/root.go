@@ -101,9 +101,9 @@ More information here: https://github.com/astrocorp42/flint`,
 		var errcList []<-chan error
 
 		// create the pipeline
-		linter := lint.NewLinter()
+		linter := lint.NewLinter(conf)
 
-		filesc, errc := linter.Lint(conf)
+		filesc, errc := linter.Lint()
 		errcList = append(errcList, errc)
 
 		outputc, errc := choosenFormatter.Format(filesc)

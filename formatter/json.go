@@ -27,6 +27,12 @@ func (formatter JSON) Format(filec <-chan lint.File) (<-chan string, <-chan erro
 			Summary:         summary{Errors: severitySummary{Rules: map[string]uint64{}}, Warnings: severitySummary{Rules: map[string]uint64{}}},
 		}
 		for file := range filec {
+			if file.IsDir {
+				output.Summary.TotalDirectories += 1
+			} else {
+				output.Summary.TotalFiles += 1
+			}
+
 			if len(file.Issues) != 0 {
 				output.FilesWithIssues = append(output.FilesWithIssues, file)
 				for _, issue := range file.Issues {

@@ -9,6 +9,7 @@ import (
 
 type Linter struct {
 	ExitCode int32
+	config   Config
 }
 
 func isIgnored(relativePath string, isDir bool, config *Config) bool {
@@ -19,7 +20,7 @@ func isIgnored(relativePath string, isDir bool, config *Config) bool {
 	return config.IgnoreFiles.MatchString(relativePath)
 }
 
-func (linter *Linter) Lint(config Config) (<-chan File, <-chan error) {
+func (linter *Linter) Lint() (<-chan File, <-chan error) {
 	filec := make(chan File)
 	errorsc := make(chan error)
 	var wg sync.WaitGroup
@@ -37,7 +38,7 @@ func (linter *Linter) Lint(config Config) (<-chan File, <-chan error) {
 				return nil
 			}
 
-			relativePath, err := filepath.Rel(config.BaseDir, filepath.Join(config.WorkingDir, path))
+			relativePath, err := filepath.Rel(linter.config.BaseDir, filepath.Join(linter.config.WorkingDir, path))
 			if err != nil {
 				errorsc <- err
 				return nil
@@ -53,7 +54,7 @@ func (linter *Linter) Lint(config Config) (<-chan File, <-chan error) {
 				Issues:       []Issue{},
 			}
 
-			if isIgnored(relativePath, file.IsDir, &config) {
+			if isIgnored(relativePath, file.IsDir, &linter.config) {
 				return nil
 			}
 
@@ -61,15 +62,15 @@ func (linter *Linter) Lint(config Config) (<-chan File, <-chan error) {
 			wg.Add(1)
 			go func() {
 				defer wg.Done()
-				issues := lintFile(file, config, errorsc)
+				issues := lintFile(file, linter.config, errorsc)
 				for _, issue := range issues {
 					if linter.ExitCode == 0 {
-						atomic.StoreInt32(&linter.ExitCode, int32(config.WarningCode))
+						atomic.StoreInt32(&linter.ExitCode, int32(linter.config.WarningCode))
 					}
-					if c, ok := config.RulesConfig[issue.Rule]; ok && c.Severity == SeverityError {
+					if c, ok := linter.config.RulesConfig[issue.Rule]; ok && c.Severity == SeverityError {
 						issue.Severity = SeverityError
-						if int(linter.ExitCode) != config.ErrorCode {
-							atomic.StoreInt32(&linter.ExitCode, int32(config.ErrorCode))
+						if int(linter.ExitCode) != linter.config.ErrorCode {
+							atomic.StoreInt32(&linter.ExitCode, int32(linter.config.ErrorCode))
 						}
 					} else {
 						issue.Severity = SeverityWarning
@@ -104,6 +105,6 @@ func lintFile(file File, config Config, errorsc <-chan error) []Issue {
 	return foundIssues
 }
 
-func NewLinter() *Linter {
-	return &Linter{}
+func NewLinter(config Config) Linter {
+	return Linter{config: config}
 }
