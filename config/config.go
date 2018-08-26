@@ -133,12 +133,12 @@ func Get() (lint.Config, error) {
 func Default() lint.ConfigFile {
 	config := lint.ConfigFile{Rules: lint.RulesConfig{}}
 
-	config.Comment = "This is a configuration file for flint, the filesystem linter. More " +
+	config.Description = "This is a configuration file for flint, the filesystem linter. More " +
 		"information here: https://github.com/astrocorp42/flint"
 	config.Format = "default"
-	config.Severity = "warning"
-	config.WarningCode = 0
-	config.ErrorCode = 1
+	config.DefaultSeverity = "warning"
+	config.WarningExitCode = 0
+	config.ErrorExitCode = 1
 	config.MatchFormat = "blob"
 	config.IgnoreFiles = []string{".*", "LICENSE*", "README*", "Gopkg.toml", "Gopkg.lock", "package.json", "Dockerfile", "Makefile", "package-lock.json"}
 	config.IgnoreDirectories = []string{".*"}
@@ -164,9 +164,9 @@ func ConfigFileToConfig(configFile lint.ConfigFile) (lint.Config, error) {
 	var err error
 
 	ret.Format = configFile.Format
-	ret.Severity = configFile.Severity
-	ret.ErrorCode = configFile.ErrorCode
-	ret.WarningCode = configFile.WarningCode
+	ret.DefaultSeverity = configFile.DefaultSeverity
+	ret.ErrorExitCode = configFile.ErrorExitCode
+	ret.WarningExitCode = configFile.WarningExitCode
 
 	if configFile.MatchFormat == "" {
 		ret.MatchFormat = "blob"

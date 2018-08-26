@@ -1,11 +1,13 @@
 # Changelog
 
-## v1.4.0 (2018-08-XX)
+## v1.5.0 (2018-08-XX)
 
 ### Added
 
 * `.gitignore` files support
 
+
+## v1.4.0 (2018-08-26)
 
 
 ## v1.3.0 (2018-08-23)

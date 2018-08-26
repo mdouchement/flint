@@ -65,12 +65,12 @@ func (linter *Linter) Lint() (<-chan File, <-chan error) {
 				issues := lintFile(file, linter.config, errorsc)
 				for _, issue := range issues {
 					if linter.ExitCode == 0 {
-						atomic.StoreInt32(&linter.ExitCode, int32(linter.config.WarningCode))
+						atomic.StoreInt32(&linter.ExitCode, int32(linter.config.WarningExitCode))
 					}
 					if c, ok := linter.config.RulesConfig[issue.Rule]; ok && c.Severity == SeverityError {
 						issue.Severity = SeverityError
-						if int(linter.ExitCode) != linter.config.ErrorCode {
-							atomic.StoreInt32(&linter.ExitCode, int32(linter.config.ErrorCode))
+						if int(linter.ExitCode) != linter.config.ErrorExitCode {
+							atomic.StoreInt32(&linter.ExitCode, int32(linter.config.ErrorExitCode))
 						}
 					} else {
 						issue.Severity = SeverityWarning

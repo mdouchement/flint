@@ -1,8 +1,8 @@
-comment = "This is a configuration file for flint, the filesystem linter. More information here: https://github.com/z0mbie42/flint"
+description = "This is a configuration file for flint, the filesystem linter. More information here: https://github.com/z0mbie42/flint"
 format = "default"
-severity = "warning"
-error_code = 1
-warning_code = 0
+default_severity = "warning"
+error_exit_code = 1
+warning_exit_code = 0
 match_format = "blob"
 ignore_files = [".*", "vendor", "LICENSE", "README.md", "CHANGELOG.md", "_build/Dockerfile", "Makefile"]
 ignore_directories = [".*", "vendor", "_build", "_docs"]

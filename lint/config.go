@@ -31,13 +31,13 @@ type Config struct {
 	// the directory of the config file, relative to the execution of flint
 	// Extends []strings // extend a set of rules
 	// for json which does not have comments
-	BaseDir     string
-	WorkingDir  string
-	Format      string
-	Severity    Severity
-	ErrorCode   int
-	WarningCode int
-	MatchFormat string
+	BaseDir         string
+	WorkingDir      string
+	Format          string
+	DefaultSeverity Severity
+	ErrorExitCode   int
+	WarningExitCode int
+	MatchFormat     string
 
 	//Files             []string    `toml:"files" json:"files"`
 	//Directories       []string    `toml:"directories" json:"directories"`
@@ -51,9 +51,9 @@ func (config Config) ToFile() ConfigFile {
 	ret := ConfigFile{}
 
 	ret.Format = config.Format
-	ret.Severity = config.Severity
-	ret.ErrorCode = config.ErrorCode
-	ret.WarningCode = config.WarningCode
+	ret.DefaultSeverity = config.DefaultSeverity
+	ret.ErrorExitCode = config.ErrorExitCode
+	ret.WarningExitCode = config.WarningExitCode
 
 	ret.Rules = RulesConfig{}
 	for name, config := range config.RulesConfig {
@@ -67,12 +67,12 @@ func (config Config) ToFile() ConfigFile {
 }
 
 type ConfigFile struct {
-	Comment     string   `toml:"comment" json:"comment"`
-	Format      string   `toml:"format" json:"format"`     // default output format
-	Severity    Severity `toml:"severity" json:"severity"` // default severity
-	ErrorCode   int      `toml:"error_code" json:"error_code"`
-	WarningCode int      `toml:"warning_code" json:"warning_code"`
-	MatchFormat string   `toml:"match_format" json:"match_format"`
+	Description     string   `toml:"description" json:"description"`
+	Format          string   `toml:"format" json:"format"` // default output format
+	DefaultSeverity Severity `toml:"default_severity" json:"default_severity"`
+	ErrorExitCode   int      `toml:"error_exit_code" json:"error_exit_code"`
+	WarningExitCode int      `toml:"warning_exit_code" json:"warning_exit_code"`
+	MatchFormat     string   `toml:"match_format" json:"match_format"`
 
 	Rules             RulesConfig `toml:"rules" json:"rules"`
 	IgnoreFiles       []string    `toml:"ignore_files" json:"ignore_files"`
