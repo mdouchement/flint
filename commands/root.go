@@ -98,28 +98,37 @@ More information here: https://github.com/astrocorp42/flint`,
 			os.Exit(3)
 		}
 
-		var errcList []<-chan error
-
-		// create the pipeline
-		linter := lint.NewLinter(conf)
-
-		filesc, errc := linter.Lint()
-		errcList = append(errcList, errc)
-
-		outputc, errc := choosenFormatter.Format(filesc)
-		errcList = append(errcList, errc)
-
-		errc = write(outputc)
-		errcList = append(errcList, errc)
-
-		err = waitForPipeline(errcList...)
+		exitCode, err := runPipeline(conf, choosenFormatter)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Error: %s\n", err.Error())
 			os.Exit(3)
 		}
 
-		os.Exit(int(linter.ExitCode))
+		os.Exit(int(exitCode))
 	},
+}
+
+func runPipeline(config lint.Config, formatter lint.Formatter) (int32, error) {
+	var errcList []<-chan error
+
+	// create the pipeline
+	linter := lint.NewLinter(config)
+
+	filesc, errc := linter.Lint()
+	errcList = append(errcList, errc)
+
+	outputc, errc := formatter.Format(filesc)
+	errcList = append(errcList, errc)
+
+	errc = write(outputc)
+	errcList = append(errcList, errc)
+
+	err := waitForPipeline(errcList...)
+	if err != nil {
+		return 3, err
+	}
+
+	return linter.ExitCode, nil
 }
 
 func write(lines <-chan string) <-chan error {
