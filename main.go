@@ -9,13 +9,13 @@ import (
 
 func fail(err string) {
 	fmt.Fprintln(os.Stderr, err)
-	os.Exit(1)
+	os.Exit(3)
 }
 
 func main() {
 	if err := commands.RootCmd.Execute(); err != nil {
 		fmt.Println(err)
-		os.Exit(1)
+		os.Exit(3)
 	}
 	/*config, err := getConfig()
 	//formatter, err := getFormatter(config.Formatter)
