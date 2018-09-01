@@ -5,7 +5,7 @@ import (
 )
 
 var (
-	Version      = "1.4.4"
+	Version      = "1.4.5"
 	UTCBuildTime = "undefined"
 	GitCommit    = "undefined"
 	OS           = runtime.GOOS
