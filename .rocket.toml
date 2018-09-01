@@ -1,6 +1,7 @@
 description = "This is a configuration file for rocket: Deploy software as fast and easily as possible. See https://github.com/astrocorp42/rocket"
 
 [github_releases]
+api_key = "$GITHUB_TOKEN"
 assets = [
   "dist/*.zip",
   "dist/flint_*_sha512sums.txt"
