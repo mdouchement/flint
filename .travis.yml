@@ -1,8 +1,7 @@
-# This is a weird way of telling Travis to use the fast container-based test
-# runner instead of the slow VM-based runner.
-sudo: false
-
 language: go
+
+services:
+  - docker
 
 env:
   - GO111MODULE=on
@@ -15,6 +14,7 @@ git:
   submodules: false
 
 before_script:
+  - go get -u github.com/astrocorp42/rocket
   - go get
   - make test
   - make
@@ -23,19 +23,15 @@ before_script:
 script:
   - make all
 
+before_deploy:
+  - export VERSION=$(cat version/version.go| grep "\sVersion" | cut -d '"' -f2) # for docker provider
+
 deploy:
-  provider: releases
+  provider: script
   skip_cleanup: true # Important, otherwise the build output would be purged.
-  api_key: $GITHUB_TOKEN
-  file_glob: true
-  file:
-    - dist/sha512sums.txt
-    - dist/*.zip
+  script: rocket
   on:
-    repo: astrocorp42/flint
     tags: true # The deployment happens only if the commit has a tag
 
 notifications:
   email:
-    on_success: never # default: change
-    on_failure: always # default: always

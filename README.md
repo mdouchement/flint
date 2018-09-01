@@ -7,11 +7,12 @@
 You think there is no place in code reviews to discuss about files naming conventions ? Impose consistent files and directories naming rules with **flint**: the filesystem linter.
 
 1. [Installation](#installation)
-2. [Usage](#usage)
-3. [Configuration](#configuration)
-4. [Available rules](#available-rules)
-5. [Available formatters](#available-formatters)
-6. [Roadmap](#roadmap)
+2. [Docker image](#docker-image)
+3. [Usage](#usage)
+4. [Configuration](#configuration)
+5. [Available rules](#available-rules)
+6. [Available formatters](#available-formatters)
+7. [Roadmap](#roadmap)
 
 -------------------
 
@@ -25,6 +26,12 @@ $ go get -u github.com/astrocorp42/flint
 ### Binary releases
 [https://github.com/astrocorp42/flint/releases/latest](https://github.com/astrocorp42/flint/releases/latest)
 
+
+
+
+## Docker image
+
+[astrocorp/flint](https://hub.docker.com/r/astrocorp/flint)
 
 
 
