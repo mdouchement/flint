@@ -1,8 +1,8 @@
 # Flint
 
-[![GoDoc](https://godoc.org/github.com/astrocorp42/flint?status.svg)](https://godoc.org/github.com/astrocorp42/flint)
-[![GitHub release](https://img.shields.io/github/release/astrocorp42/flint.svg)](https://github.com/astrocorp42/flint/releases/latest)
-[![Build Status](https://travis-ci.org/astrocorp42/flint.svg?branch=master)](https://travis-ci.org/astrocorp42/flint)
+[![GoDoc](https://godoc.org/github.com/bloom42/flint?status.svg)](https://godoc.org/github.com/bloom42/flint)
+[![GitHub release](https://img.shields.io/github/release/bloom42/flint.svg)](https://github.com/bloom42/flint/releases/latest)
+[![Build Status](https://travis-ci.org/bloom42/flint.svg?branch=master)](https://travis-ci.org/bloom42/flint)
 
 You think there is no place in code reviews to discuss about files naming conventions ? Impose consistent files and directories naming rules with **flint**: the filesystem linter.
 
@@ -20,18 +20,18 @@ You think there is no place in code reviews to discuss about files naming conven
 
 ### Using go (nightly)
 ```bash
-$ go get -u github.com/astrocorp42/flint
+$ go get -u github.com/bloom42/flint
 ```
 
 ### Binary releases
-[https://github.com/astrocorp42/flint/releases/latest](https://github.com/astrocorp42/flint/releases/latest)
+[https://github.com/bloom42/flint/releases/latest](https://github.com/bloom42/flint/releases/latest)
 
 
 
 
 ## Docker image
 
-[astrocorp/flint](https://hub.docker.com/r/astrocorp/flint)
+[bloom42/flint](https://hub.docker.com/r/bloom42/flint)
 
 
 
@@ -61,7 +61,7 @@ $ cat .flint.toml
 
 ```toml
 # as json does not allow comments, you can use "comment" field everywhere
-comment = "This is a configuration file for flint, the filesystem linter. More information here: https://github.com/astrocorp42/flint"
+comment = "This is a configuration file for flint, the filesystem linter. More information here: https://github.com/bloom42/flint"
 format = "default" # valid values are [default]
 severity = "warning" # valid values are [off, warning, error]
 error_code = 1
@@ -131,4 +131,4 @@ ignore_directories = [".*", "vendor"]
 
 ## Roadmap
 
-See [https://github.com/astrocorp42/flint/projects/1](https://github.com/astrocorp42/flint/projects/1)
+See [https://github.com/bloom42/flint/projects/1](https://github.com/bloom42/flint/projects/1)

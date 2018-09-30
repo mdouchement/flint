@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/astrocorp42/flint/version"
+	"github.com/bloom42/flint/version"
 	"github.com/spf13/cobra"
 )
 

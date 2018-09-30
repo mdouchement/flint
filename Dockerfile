@@ -5,9 +5,9 @@ RUN apk update && apk upgrade && \
 
 ADD dist/flint /bin/flint
 
-RUN adduser -D -g '' astrocorp
+RUN adduser -D -g '' bloom
 
-USER astrocorp
+USER bloom
 
 WORKDIR /flint
 

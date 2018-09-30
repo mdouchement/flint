@@ -8,9 +8,9 @@
 
 NAME = flint
 DIST_DIR = dist
-REPO="github.com/astrocorp42/flint"
+REPO="github.com/bloom42/flint"
 VERSION := $(shell cat version/version.go| grep "\sVersion" | cut -d '"' -f2)
-DOCKER_IMAGE = "astrocorp/$(NAME)"
+DOCKER_IMAGE = "bloom42/$(NAME)"
 
 define checksums
 	echo $$(openssl sha512 $(1) | cut -d " " -f2) $$(echo $(1) | rev | cut -d "/" -f1 | rev) >> $(2)/$(3)

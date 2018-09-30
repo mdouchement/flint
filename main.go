@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/astrocorp42/flint/commands"
+	"github.com/bloom42/flint/commands"
 )
 
 func fail(err string) {

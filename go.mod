@@ -1,4 +1,4 @@
-module github.com/astrocorp42/flint
+module github.com/bloom42/flint
 
 require (
 	github.com/BurntSushi/toml v0.3.0

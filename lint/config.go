@@ -1,7 +1,7 @@
 package lint
 
 import (
-	"github.com/astrocorp42/flint/match"
+	"github.com/bloom42/flint/match"
 )
 
 // Arguments is type used for the arguments of a rule.

@@ -4,7 +4,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/astrocorp42/flint/lint"
+	"github.com/bloom42/flint/lint"
 )
 
 var partialSnakeCaseRegex = regexp.MustCompile("^[a-z0-9_A-Z]*$")

@@ -3,7 +3,7 @@ package formatter
 import (
 	"fmt"
 
-	"github.com/astrocorp42/flint/lint"
+	"github.com/bloom42/flint/lint"
 )
 
 type Basic struct{}

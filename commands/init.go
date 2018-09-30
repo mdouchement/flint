@@ -8,7 +8,7 @@ import (
 	"os"
 
 	"github.com/BurntSushi/toml"
-	"github.com/astrocorp42/flint/config"
+	"github.com/bloom42/flint/config"
 	"github.com/spf13/cobra"
 )
 
