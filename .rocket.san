@@ -11,6 +11,6 @@ github_releases = {
 docker = {
   images = [
     "bloom42/flint:$VERSION",
-    "bloom42/flint:latest",
+    "bloom42/flint:latest"
   ]
 }
