@@ -6,13 +6,15 @@ match_format = "blob"
 ignore_files = [".*", "vendor", "LICENSE", "README.md", "CHANGELOG.md", "_build/Dockerfile", "Makefile", "Dockerfile"]
 ignore_directories = [".*", "vendor", "_build", "_docs"]
 
-[rules]
-  [rules."dir/no_dot"]
-  [rules."file/lower_case_ext"]
-  [rules."file/no_multi_ext"]
-  [rules.no_empty_name]
-  [rules.no_leading_underscores]
-  [rules.no_trailing_underscores]
-  [rules.no_whitespaces]
-  [rules.snake_case]
+rules = {
+  "dir/no_dot" = {}
+  "file/lower_case_ext" = {}
+  "file/no_multi_ext" = {}
+  no_empty_name = {}
+  no_leading_underscores = {}
+  no_trailing_underscores = {}
+  no_whitespaces = {}
+  snake_case = {
     severity = "error"
+  }
+}

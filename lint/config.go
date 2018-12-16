@@ -9,8 +9,8 @@ type Arguments = []interface{}
 
 // RuleConfig is type used for the rule configuration.
 type RuleConfig struct {
-	Arguments Arguments `toml:"arguments,omitempty" json:"arguments,omitempty"`
-	Severity  Severity  `toml:"severity,omitempty" json:"severity,omitempty"`
+	Arguments Arguments `sane:"arguments,omitempty" json:"arguments,omitempty"`
+	Severity  Severity  `sane:"severity,omitempty" json:"severity,omitempty"`
 }
 
 // RulesConfig defines the config for all rules.
@@ -38,8 +38,8 @@ type Config struct {
 	WarningExitCode int
 	MatchFormat     string
 
-	//Files             []string    `toml:"files" json:"files"`
-	//Directories       []string    `toml:"directories" json:"directories"`
+	//Files             []string    `sane:"files" json:"files"`
+	//Directories       []string    `sane:"directories" json:"directories"`
 	Rules             Rules
 	RulesConfig       RulesConfig
 	IgnoreFiles       match.Matcher
@@ -65,13 +65,13 @@ func (config Config) ToFile() ConfigFile {
 }
 
 type ConfigFile struct {
-	Description     string   `toml:"description" json:"description"`
-	DefaultSeverity Severity `toml:"default_severity" json:"default_severity"`
-	ErrorExitCode   int      `toml:"error_exit_code" json:"error_exit_code"`
-	WarningExitCode int      `toml:"warning_exit_code" json:"warning_exit_code"`
-	MatchFormat     string   `toml:"match_format" json:"match_format"`
+	Description     string   `sane:"description" json:"description"`
+	DefaultSeverity Severity `sane:"default_severity" json:"default_severity"`
+	ErrorExitCode   int      `sane:"error_exit_code" json:"error_exit_code"`
+	WarningExitCode int      `sane:"warning_exit_code" json:"warning_exit_code"`
+	MatchFormat     string   `sane:"match_format" json:"match_format"`
 
-	Rules             RulesConfig `toml:"rules" json:"rules"`
-	IgnoreFiles       []string    `toml:"ignore_files" json:"ignore_files"`
-	IgnoreDirectories []string    `toml:"ignore_directories" json:"ignore_directories"`
+	Rules             RulesConfig `sane:"rules" json:"rules"`
+	IgnoreFiles       []string    `sane:"ignore_files" json:"ignore_files"`
+	IgnoreDirectories []string    `sane:"ignore_directories" json:"ignore_directories"`
 }

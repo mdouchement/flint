@@ -1,7 +1,6 @@
 package config
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"io/ioutil"
@@ -9,7 +8,7 @@ import (
 	"path"
 	"path/filepath"
 
-	"github.com/BurntSushi/toml"
+	"github.com/bloom42/sane-go"
 	"github.com/bloom42/flint/formatter"
 	"github.com/bloom42/flint/lint"
 	"github.com/bloom42/flint/match"
@@ -18,7 +17,7 @@ import (
 	"github.com/bloom42/flint/rule/file"
 )
 
-const DefaultConfigurationFileName = ".flint"
+const DefaultConfigurationFileName = ".flint.sane"
 
 var DefaultRules = lint.Rules{
 	rule.NoLeadingUnderscores{},
@@ -72,12 +71,9 @@ func FindConfigFile() string {
 		}
 
 		configFilePath = path.Join(directory, DefaultConfigurationFileName)
-		if FileExists(configFilePath + ".toml") {
-			return configFilePath + ".toml"
-		} else if FileExists(configFilePath + ".json") {
-			return configFilePath + ".json"
+		if FileExists(configFilePath) {
+			return configFilePath
 		}
-
 		directory = path.Dir(directory)
 	}
 
@@ -87,7 +83,6 @@ func FindConfigFile() string {
 func parseConfig(configFilePath string) (lint.Config, error) {
 	config := lint.ConfigFile{}
 	var ret lint.Config
-	ext := filepath.Ext(configFilePath)
 	var err error
 
 	file, err := ioutil.ReadFile(configFilePath)
@@ -95,14 +90,7 @@ func parseConfig(configFilePath string) (lint.Config, error) {
 		return ret, err
 	}
 
-	switch ext {
-	case ".toml":
-		_, err = toml.Decode(string(file), &config)
-	case ".json":
-		err = json.Unmarshal(file, &config)
-	default:
-		err = errors.New(ext + " is not a configuration file extension")
-	}
+	err = sane.Unmarshal(file, &config)
 	if err != nil {
 		return ret, err
 	}
@@ -117,7 +105,7 @@ func Get() (lint.Config, error) {
 	configFilePath := FindConfigFile()
 
 	if configFilePath == "" {
-		return config, errors.New(".flint(.toml|json) configuraiton file not found. Please run \"flint init\"")
+		return config, errors.New(".flint.sane configuraiton file not found. Please run \"flint init\"")
 	}
 
 	config, err = parseConfig(configFilePath)

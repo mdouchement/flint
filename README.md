@@ -50,16 +50,16 @@ $ flint
 
 ## Configuration
 
-Configuration is stored in a `.flint.(toml|json)` file at the root of your project (repo).
+Configuration is stored in a `.flint.sane` file at the root of your project (repo).
 
 When runned, flint will recursively search upward for a configuraiton file, starting in the current
 directory.
 
 ```bash
-$ cat .flint.toml
+$ cat .flint.sane
 ```
 
-```toml
+```sane
 # as json does not allow comments, you can use "comment" field everywhere
 comment = "This is a configuration file for flint, the filesystem linter. More information here: https://github.com/bloom42/flint"
 format = "default" # valid values are [default]

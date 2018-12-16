@@ -1,29 +1,25 @@
 package commands
 
 import (
-	"bytes"
-	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"os"
 
-	"github.com/BurntSushi/toml"
 	"github.com/bloom42/flint/config"
+	"github.com/bloom42/sane-go"
 	"github.com/spf13/cobra"
 )
 
-var initFormat string
 var initForce bool
 
 func init() {
 	RootCmd.AddCommand(InitCmd)
-	InitCmd.PersistentFlags().StringVarP(&initFormat, "format", "f", "toml", "Format of the configuration file. Valid values are [toml, json]")
-	InitCmd.PersistentFlags().BoolVar(&initForce, "force", false, "Force and override an existing .flint.(toml|json) file")
+	InitCmd.PersistentFlags().BoolVar(&initForce, "force", false, "Force and override an existing .flint.sane file")
 }
 
 var InitCmd = &cobra.Command{
 	Use:   "init",
-	Short: "Init flint by creating a .flint.(toml|json) configuration file",
+	Short: "Init flint by creating a .flint.sane configuration file",
 	Long:  "Create a flint configuration file",
 	Run: func(cmd *cobra.Command, args []string) {
 		configFile := config.FindConfigFile()
@@ -34,31 +30,15 @@ var InitCmd = &cobra.Command{
 			os.Exit(3)
 		}
 
-		if initFormat != "toml" && initFormat != "json" {
-			fmt.Fprintf(os.Stderr, "%s is not a valid configuration file format", initFormat)
-			os.Exit(3)
-		}
-
 		conf := config.Default()
 		filePath := config.DefaultConfigurationFileName
-		buf := new(bytes.Buffer)
-
-		switch initFormat {
-		case "toml":
-			err = toml.NewEncoder(buf).Encode(conf)
-			filePath += ".toml"
-		case "json":
-			err = json.NewEncoder(buf).Encode(conf)
-			filePath += ".json"
-		default:
-			err = fmt.Errorf("%s is not a valid configuration file format", initFormat)
-		}
+		data, err := sane.Marshal(conf)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
 			os.Exit(3)
 		}
 
-		err = ioutil.WriteFile(filePath, buf.Bytes(), 0644)
+		err = ioutil.WriteFile(filePath, data, 0644)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
 			os.Exit(3)
