@@ -1,7 +1,7 @@
 module github.com/bloom42/flint
 
 require (
-	github.com/bloom42/sane-go v0.6.0
+	github.com/bloom42/sane-go v0.6.1
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
