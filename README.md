@@ -60,7 +60,6 @@ $ cat .flint.sane
 ```
 
 ```sane
-# as json does not allow comments, you can use "comment" field everywhere
 description = "This is a configuration file for flint, the filesystem linter. More information here: https://github.com/z0mbie42/flint"
 default_severity = "warning" # valid values are [off, warning, error]
 error_exit_code = 1
