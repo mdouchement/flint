@@ -61,11 +61,10 @@ $ cat .flint.sane
 
 ```sane
 # as json does not allow comments, you can use "comment" field everywhere
-comment = "This is a configuration file for flint, the filesystem linter. More information here: https://github.com/bloom42/flint"
-format = "default" # valid values are [default]
-severity = "warning" # valid values are [off, warning, error]
-error_code = 1
-warning_code = 0
+description = "This is a configuration file for flint, the filesystem linter. More information here: https://github.com/z0mbie42/flint"
+default_severity = "warning" # valid values are [off, warning, error]
+error_exit_code = 1
+warning_exit_code = 0
 match_format = "blob" # match format for ignore_directories and ignore_files, valid values are [blob, regexp]
 
 
@@ -75,15 +74,18 @@ ignore_directories = [".*", "vendor"]
 
 
 # define used rules
-[rules]
-  [rules."dir/no_dot"]
-  [rules."file/lower_case_ext"]
-  [rules."file/no_multi_ext"]
-  [rules.no_empty_name]
-  [rules.no_leading_underscores]
-  [rules.no_trailing_underscores]
-  [rules.no_whitespaces]
-  [rules.snake_case]
+rules = {
+  "dir/no_dot" = {}
+  "file/lower_case_ext" = {}
+  "file/no_multi_ext" = {}
+  no_empty_name = {}
+  no_leading_underscores = {}
+  no_trailing_underscores = {}
+  no_whitespaces = {}
+  snake_case = {
+    severity = "error"
+  }
+}
 ```
 
 
